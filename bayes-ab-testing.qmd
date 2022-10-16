@@ -156,24 +156,22 @@ As the curve narrows, notice that the shape parameters of the Beta distribution 
 
 ## Something even more informative {.smaller}
 
-```{r}
+```{r fig.height=3.5, fig.width=11}
 plot_beta_pdf(12, 28, group = factor("control", levels = experiment_groups)) +
     labs(
         title = "Prior for click-through rate of control group"
     )
 ```
 
-::: aside
 ::: columns
-::: {.column width="80%"}
-The shape parameters (`shape1` and `shape2`) of the Beta distribution can be thought of as counts of **successes** and **failures**, respectively. Therefore, the mean probability of success (i.e. average click-through rate) is simply calculated with this formula:
+::: {.column width="75%"}
+The shape parameters (`shape1` and `shape2`) of the Beta distribution can be considered counts of **successes** and **failures**, respectively. Therefore, the mean probability of success (i.e. average click-through rate) can be calculated by this formula:
 :::
 
-::: {.column width="20%"}
+::: {.column width="25%"}
 $$
 \frac{shape1}{shape1 + shape2}
 $$
-:::
 :::
 :::
 

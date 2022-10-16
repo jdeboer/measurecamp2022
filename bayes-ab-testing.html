@@ -514,10 +514,18 @@
 <h2>Something even more informative</h2>
 <div class="cell">
 <div class="cell-output-display">
-<p><img data-src="bayes-ab-testing_files/figure-revealjs/unnamed-chunk-4-1.png" width="960"></p>
+<p><img data-src="bayes-ab-testing_files/figure-revealjs/unnamed-chunk-4-1.png" width="1056"></p>
 </div>
 </div>
-
+<div class="columns">
+<div class="column" style="width:75%;">
+<p>The shape parameters (<code>shape1</code> and <code>shape2</code>) of the Beta distribution can be considered counts of <strong>successes</strong> and <strong>failures</strong>, respectively. Therefore, the mean probability of success (i.e.&nbsp;average click-through rate) can be calculated by this formula:</p>
+</div><div class="column" style="width:25%;">
+<p><span class="math display">\[
+\frac{shape1}{shape1 + shape2}
+\]</span></p>
+</div>
+</div>
 <aside class="notes">
 <p>The shape parameters are actually slightly more than the count of successes and failures, i.e.&nbsp;<span class="math inline">\(successes = \alpha - 1\)</span> and <span class="math inline">\(failures = \beta - 1\)</span>, or <span class="math inline">\(successes = \alpha - 0.5\)</span> and <span class="math inline">\(failures = \beta - 0.5\)</span> if using Jeffreys prior.</p>
 <style type="text/css">
@@ -531,17 +539,7 @@
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<aside><div>
-<div class="columns">
-<div class="column" style="width:80%;">
-<p>The shape parameters (<code>shape1</code> and <code>shape2</code>) of the Beta distribution can be thought of as counts of <strong>successes</strong> and <strong>failures</strong>, respectively. Therefore, the mean probability of success (i.e.&nbsp;average click-through rate) is simply calculated with this formula:</p>
-</div><div class="column" style="width:20%;">
-<p><span class="math display">\[
-\frac{shape1}{shape1 + shape2}
-\]</span></p>
-</div>
-</div>
-</div></aside></section>
+</section>
 <section id="lets-say-weve-settled-on-this" class="slide level2 smaller">
 <h2>Let’s say we’ve settled on this:</h2>
 <div class="cell">
@@ -691,17 +689,17 @@
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">control</td>
-<td style="text-align: right;">82</td>
-<td style="text-align: right;">30</td>
-<td style="text-align: right;">52</td>
-<td style="text-align: left;">36.6%</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">45</td>
+<td style="text-align: left;">27.4%</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">treatment</td>
-<td style="text-align: right;">73</td>
-<td style="text-align: right;">22</td>
-<td style="text-align: right;">51</td>
-<td style="text-align: left;">30.1%</td>
+<td style="text-align: right;">97</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">65</td>
+<td style="text-align: left;">33.0%</td>
 </tr>
 </tbody>
 </table>
@@ -761,13 +759,13 @@
 </tr>
 <tr class="even">
 <td style="text-align: left;">clicked</td>
-<td style="text-align: right;">30</td>
-<td style="text-align: right;">22</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">32</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">posterior_shape1</td>
-<td style="text-align: right;">150</td>
-<td style="text-align: right;">49</td>
+<td style="text-align: right;">137</td>
+<td style="text-align: right;">59</td>
 </tr>
 </tbody>
 </table>
@@ -795,13 +793,13 @@
 </tr>
 <tr class="even">
 <td style="text-align: left;">not_clicked</td>
-<td style="text-align: right;">52</td>
-<td style="text-align: right;">51</td>
+<td style="text-align: right;">45</td>
+<td style="text-align: right;">65</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">posterior_shape2</td>
-<td style="text-align: right;">340</td>
-<td style="text-align: right;">111</td>
+<td style="text-align: right;">333</td>
+<td style="text-align: right;">125</td>
 </tr>
 </tbody>
 </table>
@@ -906,45 +904,45 @@
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">0.318</td>
-<td style="text-align: right;">0.371</td>
-<td style="text-align: right;">0.168</td>
+<td style="text-align: right;">0.294</td>
+<td style="text-align: right;">0.341</td>
+<td style="text-align: right;">0.161</td>
 <td style="text-align: left;">TRUE</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">0.326</td>
-<td style="text-align: right;">0.364</td>
-<td style="text-align: right;">0.117</td>
+<td style="text-align: right;">0.303</td>
+<td style="text-align: right;">0.344</td>
+<td style="text-align: right;">0.137</td>
 <td style="text-align: left;">TRUE</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">0.327</td>
-<td style="text-align: right;">0.370</td>
-<td style="text-align: right;">0.131</td>
+<td style="text-align: right;">0.310</td>
+<td style="text-align: right;">0.368</td>
+<td style="text-align: right;">0.189</td>
 <td style="text-align: left;">TRUE</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">0.328</td>
+<td style="text-align: right;">0.309</td>
+<td style="text-align: right;">0.347</td>
+<td style="text-align: right;">0.123</td>
+<td style="text-align: left;">TRUE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.299</td>
+<td style="text-align: right;">0.377</td>
+<td style="text-align: right;">0.260</td>
+<td style="text-align: left;">TRUE</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.288</td>
 <td style="text-align: right;">0.350</td>
-<td style="text-align: right;">0.067</td>
+<td style="text-align: right;">0.214</td>
 <td style="text-align: left;">TRUE</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">0.327</td>
-<td style="text-align: right;">0.359</td>
-<td style="text-align: right;">0.098</td>
-<td style="text-align: left;">TRUE</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">0.315</td>
-<td style="text-align: right;">0.352</td>
-<td style="text-align: right;">0.117</td>
-<td style="text-align: left;">TRUE</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">0.302</td>
-<td style="text-align: right;">0.363</td>
-<td style="text-align: right;">0.202</td>
+<td style="text-align: right;">0.297</td>
+<td style="text-align: right;">0.336</td>
+<td style="text-align: right;">0.129</td>
 <td style="text-align: left;">TRUE</td>
 </tr>
 </tbody>
@@ -996,12 +994,12 @@
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>    control         treatment          uplift         beats_control  
- Min.   :0.2797   Min.   :0.3049   Min.   :-0.08886   Mode :logical  
- 1st Qu.:0.3122   1st Qu.:0.3465   1st Qu.: 0.07925   FALSE:5867     
- Median :0.3185   Median :0.3534   Median : 0.10968   TRUE :994133   
- Mean   :0.3185   Mean   :0.3535   Mean   : 0.11065                  
- 3rd Qu.:0.3248   3rd Qu.:0.3604   3rd Qu.: 0.14105                  
- Max.   :0.3649   Max.   :0.4040   Max.   : 0.36228                  </code></pre>
+ Min.   :0.2550   Min.   :0.3031   Min.   :-0.03964   Mode :logical  
+ 1st Qu.:0.2905   1st Qu.:0.3443   1st Qu.: 0.15030   FALSE:30       
+ Median :0.2966   Median :0.3511   Median : 0.18340   TRUE :999970   
+ Mean   :0.2967   Mean   :0.3511   Mean   : 0.18455                  
+ 3rd Qu.:0.3028   3rd Qu.:0.3579   3rd Qu.: 0.21760                  
+ Max.   :0.3392   Max.   :0.3970   Max.   : 0.46371                  </code></pre>
 </div>
 </div>
 <p>What is the probability that the CTR of the treatment is greater than that of control?</p>
@@ -1013,7 +1011,7 @@
 <span id="cb3-4"><a href="#cb3-4"></a>) <span class="sc">%&gt;%</span> scales<span class="sc">::</span><span class="fu">percent</span>(<span class="fl">0.01</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column fragment">
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "99.41%"</code></pre>
+<pre><code>[1] "100.00%"</code></pre>
 </div>
 </div>
 </div>
