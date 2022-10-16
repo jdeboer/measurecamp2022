@@ -8,8 +8,8 @@ format:
         toc-title: "Agenda"
         footer: "Johann de Boer - Sydney Measurecamp 2022"
         scrollable: true
-        theme: dark
         df-print: kable
+        theme: dark
         slide-number: true
         logo: "Logo_MeasureCamp_SYD_2015-3.png"
     html: 
@@ -43,7 +43,7 @@ We want to know what effect our treatment has.
 
 ::: fragment
 ::: callout-tip
-Early on during an experiment, differences between these group could simply be due to the random allocation of participants. As the groups get larger, those random differences will diminish, bringing us closer to the difference caused by the treatment.
+Early on during an experiment, differences between these groups could simply be due to the random allocation of participants. As the groups get larger, these random differences will diminish, bringing us closer to the difference caused by the treatment.
 
 Applying Bayesian inference effectively gives the experiment a guided head start by including more data in the form of **priors**.
 :::
@@ -136,7 +136,7 @@ plot_beta_pdf(1, 1, group = factor("control", levels = experiment_groups)) +
 :::
 
 ::: callout-tip
-The **Beta distribution** is a **probability density function (PDF)** with two **shape parameters**: $B(shape1, shape2)$. It's used to describe proportions, such click-through rate.
+The **Beta distribution** is a **probability density function (PDF)** with two **shape parameters**: $B(shape1, shape2)$. It's used to describe proportions, such as click-through rate.
 :::
 
 ::: notes
@@ -152,7 +152,7 @@ plot_beta_pdf(4, 7, group = factor("control", levels = experiment_groups)) +
     )
 ```
 
-As the curve narrows, notice how the shape parameters of the Beta distribution increase.
+As the curve narrows, notice that the shape parameters of the Beta distribution increase.
 
 ## Something even more informative {.smaller}
 
@@ -212,7 +212,7 @@ Through substitution and rearrangement, you can determine $\alpha$ and $\beta$ f
 
 -   We're more confident than not that the click-through rate of the treatment group will be an improvement over control.
 
--   We don't want to bias the results of the experiment in favour of treatment or control, or towards a conclusion of there being a different or no difference.
+-   We don't want to bias the results of the experiment in favour of treatment or control, or towards a conclusion of there being a difference or no difference.
 
 ## We've settled on these priors:
 
@@ -505,7 +505,7 @@ posterior_samples <- draw_posterior_samples(posteriors, simulation_size)
 ```
 
 ::: {.fragment .fade-up}
-Here's are some of our Monte Carlo samples:
+Here's some of our Monte Carlo samples:
 
 ```{r}
 posterior_samples %>% 
@@ -578,12 +578,12 @@ plot_posterior_samples(posterior_samples, animate = render_animations)
 :::
 
 ::: notes
-Notice how these histograms follow the same distribution as our posteriors. That is because these samples have been drawn at random acording to those posterior distributions.
+Notice how these histograms follow the same distribution as our posteriors. That is because these samples have been drawn at random according to those posterior distributions.
 :::
 
 ## We can now make some inferences
 
-Here's a summary of our posterior predictive distributions as a results of the `r scales::number(simulation_size)` simulations:
+Here's a summary of our posterior predictive distributions as a result of the `r scales::number(simulation_size)` simulations:
 
 ```{r}
 posterior_comparison <- posterior_samples %>% 
@@ -654,9 +654,9 @@ p
 
 ## If using uninformative priors...
 
-If your original priors are uninformative or too weak then you face the same risks as frequentist experiments.
+If your original priors are uninformative or too weak, then you face the same risks as with frequentist experiments.
 
-Perform **power analysis** ahead of running the experiment. This is to determine the required sample size before any inferences shall be made.
+Perform **power analysis** ahead of running the experiment. This is to determine the required sample size before any inferences are made.
 
 Prior to the experiment commencing, decide on:
 

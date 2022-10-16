@@ -425,7 +425,7 @@
 <p><strong>Tip</strong></p>
 </div>
 <div class="callout-content">
-<p>Early on during an experiment, differences between these group could simply be due to the random allocation of participants. As the groups get larger, those random differences will diminish, bringing us closer to the difference caused by the treatment.</p>
+<p>Early on during an experiment, differences between these groups could simply be due to the random allocation of participants. As the groups get larger, these random differences will diminish, bringing us closer to the difference caused by the treatment.</p>
 <p>Applying Bayesian inference effectively gives the experiment a guided head start by including more data in the form of <strong>priors</strong>.</p>
 </div>
 </div>
@@ -487,7 +487,7 @@
 <p><strong>Tip</strong></p>
 </div>
 <div class="callout-content">
-<p>The <strong>Beta distribution</strong> is a <strong>probability density function (PDF)</strong> with two <strong>shape parameters</strong>: <span class="math inline">\(B(shape1, shape2)\)</span>. It’s used to describe proportions, such click-through rate.</p>
+<p>The <strong>Beta distribution</strong> is a <strong>probability density function (PDF)</strong> with two <strong>shape parameters</strong>: <span class="math inline">\(B(shape1, shape2)\)</span>. It’s used to describe proportions, such as click-through rate.</p>
 </div>
 </div>
 </div>
@@ -508,7 +508,7 @@
 <section id="something-a-little-more-informative" class="slide level2 smaller">
 <h2>Something a little more informative</h2>
 
-<img data-src="bayes-ab-testing_files/figure-revealjs/unnamed-chunk-3-1.png" width="960" class="r-stretch"><p>As the curve narrows, notice how the shape parameters of the Beta distribution increase.</p>
+<img data-src="bayes-ab-testing_files/figure-revealjs/unnamed-chunk-3-1.png" width="960" class="r-stretch"><p>As the curve narrows, notice that the shape parameters of the Beta distribution increase.</p>
 </section>
 <section id="something-even-more-informative" class="slide level2 smaller">
 <h2>Something even more informative</h2>
@@ -574,7 +574,7 @@
 <li><p>We don’t know how correlated they will be, but we’re not expecting a dramatic difference between them.</p></li>
 <li><p>We hope that the click-through rate of the treatment group will be an improvement, but we’re open to other possibilities.</p></li>
 <li><p>We’re more confident than not that the click-through rate of the treatment group will be an improvement over control.</p></li>
-<li><p>We don’t want to bias the results of the experiment in favour of treatment or control, or towards a conclusion of there being a different or no difference.</p></li>
+<li><p>We don’t want to bias the results of the experiment in favour of treatment or control, or towards a conclusion of there being a difference or no difference.</p></li>
 </ul>
 </section>
 <section id="weve-settled-on-these-priors" class="slide level2">
@@ -691,17 +691,17 @@
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">control</td>
-<td style="text-align: right;">72</td>
-<td style="text-align: right;">22</td>
-<td style="text-align: right;">50</td>
-<td style="text-align: left;">30.6%</td>
+<td style="text-align: right;">82</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: left;">36.6%</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">treatment</td>
-<td style="text-align: right;">72</td>
-<td style="text-align: right;">19</td>
-<td style="text-align: right;">53</td>
-<td style="text-align: left;">26.4%</td>
+<td style="text-align: right;">73</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: left;">30.1%</td>
 </tr>
 </tbody>
 </table>
@@ -761,13 +761,13 @@
 </tr>
 <tr class="even">
 <td style="text-align: left;">clicked</td>
+<td style="text-align: right;">30</td>
 <td style="text-align: right;">22</td>
-<td style="text-align: right;">19</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">posterior_shape1</td>
-<td style="text-align: right;">142</td>
-<td style="text-align: right;">46</td>
+<td style="text-align: right;">150</td>
+<td style="text-align: right;">49</td>
 </tr>
 </tbody>
 </table>
@@ -795,13 +795,13 @@
 </tr>
 <tr class="even">
 <td style="text-align: left;">not_clicked</td>
-<td style="text-align: right;">50</td>
-<td style="text-align: right;">53</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">51</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">posterior_shape2</td>
-<td style="text-align: right;">338</td>
-<td style="text-align: right;">113</td>
+<td style="text-align: right;">340</td>
+<td style="text-align: right;">111</td>
 </tr>
 </tbody>
 </table>
@@ -892,7 +892,7 @@
 
 </div>
 <div class="fragment fade-up">
-<p>Here’s are some of our Monte Carlo samples:</p>
+<p>Here’s some of our Monte Carlo samples:</p>
 <div class="cell">
 <div class="cell-output-display">
 <table>
@@ -906,45 +906,45 @@
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">0.329</td>
-<td style="text-align: right;">0.329</td>
-<td style="text-align: right;">-0.001</td>
-<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0.318</td>
+<td style="text-align: right;">0.371</td>
+<td style="text-align: right;">0.168</td>
+<td style="text-align: left;">TRUE</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">0.335</td>
-<td style="text-align: right;">0.340</td>
-<td style="text-align: right;">0.015</td>
+<td style="text-align: right;">0.326</td>
+<td style="text-align: right;">0.364</td>
+<td style="text-align: right;">0.117</td>
 <td style="text-align: left;">TRUE</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">0.336</td>
+<td style="text-align: right;">0.327</td>
+<td style="text-align: right;">0.370</td>
+<td style="text-align: right;">0.131</td>
+<td style="text-align: left;">TRUE</td>
+</tr>
+<tr class="even">
 <td style="text-align: right;">0.328</td>
-<td style="text-align: right;">-0.023</td>
-<td style="text-align: left;">FALSE</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">0.344</td>
-<td style="text-align: right;">0.330</td>
-<td style="text-align: right;">-0.042</td>
-<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0.350</td>
+<td style="text-align: right;">0.067</td>
+<td style="text-align: left;">TRUE</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">0.311</td>
-<td style="text-align: right;">0.331</td>
-<td style="text-align: right;">0.065</td>
+<td style="text-align: right;">0.327</td>
+<td style="text-align: right;">0.359</td>
+<td style="text-align: right;">0.098</td>
 <td style="text-align: left;">TRUE</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">0.331</td>
-<td style="text-align: right;">0.319</td>
-<td style="text-align: right;">-0.036</td>
-<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0.315</td>
+<td style="text-align: right;">0.352</td>
+<td style="text-align: right;">0.117</td>
+<td style="text-align: left;">TRUE</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">0.321</td>
-<td style="text-align: right;">0.335</td>
-<td style="text-align: right;">0.043</td>
+<td style="text-align: right;">0.302</td>
+<td style="text-align: right;">0.363</td>
+<td style="text-align: right;">0.202</td>
 <td style="text-align: left;">TRUE</td>
 </tr>
 </tbody>
@@ -977,7 +977,7 @@
 </div>
 </div>
 <aside class="notes">
-<p>Notice how these histograms follow the same distribution as our posteriors. That is because these samples have been drawn at random acording to those posterior distributions.</p>
+<p>Notice how these histograms follow the same distribution as our posteriors. That is because these samples have been drawn at random according to those posterior distributions.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -992,16 +992,16 @@
 </section>
 <section id="we-can-now-make-some-inferences" class="slide level2">
 <h2>We can now make some inferences</h2>
-<p>Here’s a summary of our posterior predictive distributions as a results of the 1 000 000 simulations:</p>
+<p>Here’s a summary of our posterior predictive distributions as a result of the 1 000 000 simulations:</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>    control         treatment          uplift         beats_control  
- Min.   :0.2803   Min.   :0.2877   Min.   :-0.14552   Mode :logical  
- 1st Qu.:0.3171   1st Qu.:0.3309   1st Qu.: 0.01565   FALSE:147332   
- Median :0.3233   Median :0.3377   Median : 0.04450   TRUE :852668   
- Mean   :0.3234   Mean   :0.3377   Mean   : 0.04533                  
- 3rd Qu.:0.3296   3rd Qu.:0.3445   3rd Qu.: 0.07407                  
- Max.   :0.3674   Max.   :0.3828   Max.   : 0.25680                  </code></pre>
+ Min.   :0.2797   Min.   :0.3049   Min.   :-0.08886   Mode :logical  
+ 1st Qu.:0.3122   1st Qu.:0.3465   1st Qu.: 0.07925   FALSE:5867     
+ Median :0.3185   Median :0.3534   Median : 0.10968   TRUE :994133   
+ Mean   :0.3185   Mean   :0.3535   Mean   : 0.11065                  
+ 3rd Qu.:0.3248   3rd Qu.:0.3604   3rd Qu.: 0.14105                  
+ Max.   :0.3649   Max.   :0.4040   Max.   : 0.36228                  </code></pre>
 </div>
 </div>
 <p>What is the probability that the CTR of the treatment is greater than that of control?</p>
@@ -1013,7 +1013,7 @@
 <span id="cb3-4"><a href="#cb3-4"></a>) <span class="sc">%&gt;%</span> scales<span class="sc">::</span><span class="fu">percent</span>(<span class="fl">0.01</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column fragment">
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "85.27%"</code></pre>
+<pre><code>[1] "99.41%"</code></pre>
 </div>
 </div>
 </div>
@@ -1043,8 +1043,8 @@
 </section>
 <section id="if-using-uninformative-priors" class="slide level2">
 <h2>If using uninformative priors…</h2>
-<p>If your original priors are uninformative or too weak then you face the same risks as frequentist experiments.</p>
-<p>Perform <strong>power analysis</strong> ahead of running the experiment. This is to determine the required sample size before any inferences shall be made.</p>
+<p>If your original priors are uninformative or too weak, then you face the same risks as with frequentist experiments.</p>
+<p>Perform <strong>power analysis</strong> ahead of running the experiment. This is to determine the required sample size before any inferences are made.</p>
 <p>Prior to the experiment commencing, decide on:</p>
 <ul>
 <li><p>The <strong>minimum detectable effect</strong> size</p></li>
