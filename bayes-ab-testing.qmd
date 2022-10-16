@@ -1,0 +1,731 @@
+---
+title: "Introduction to Bayesian A/B testing"
+author: "Johann de Boer"
+format:
+    revealjs:
+        toc: true
+        toc-depth: 1
+        toc-title: "Agenda"
+        footer: "Johann de Boer - Sydney Measurecamp 2022"
+        scrollable: true
+        theme: dark
+        df-print: kable
+        slide-number: true
+        logo: "Logo_MeasureCamp_SYD_2015-3.png"
+    html: 
+        toc: true
+        theme: darkly
+        df-print: kable
+editor: visual
+---
+
+```{r}
+#| include: false
+library(tidyverse)
+library(glue)
+library(ggdark)
+library(gganimate)
+theme_set(dark_theme_gray())
+render_animations <- TRUE
+```
+
+# Setting the scene
+
+## Randomised Control Trials (RCTs) {.smaller}
+
+A simplistic example:
+
+-   Users are assigned at **random** to two groups, A and B, with equal probability.
+
+-   Let A be our **control** group and B be our **treatment** group.
+
+We want to know what effect our treatment has.
+
+::: fragment
+::: callout-tip
+Early on during an experiment, differences between these group could simply be due to the random allocation of participants. As the groups get larger, those random differences will diminish, bringing us closer to the difference caused by the treatment.
+
+Applying Bayesian inference effectively gives the experiment a guided head start by including more data in the form of **priors**.
+:::
+:::
+
+## Hypothetical scenario
+
+::: columns
+::: {.column width="70%"}
+We have a button on a landing page that takes users to a sign up form.
+
+At present, the button is labelled "Register your interest".
+
+We want to test whether changing it to "Get started" will result in an increased click-through rate (CTR).
+
+The idea of "Get started" was suggested by an experienced and skilled UX design professional.
+:::
+
+::: {.column width="30%"}
+![](A_B%20Button%20CTA%20test.png){fig-alt="Two button CTA being compared: \"Register your interest\" vs \"Get started\"" fig-align="center"}
+:::
+:::
+
+# Priors and probability distributions
+
+## Prior knowledge and beliefs {.smaller}
+
+Before running an experiment, we form opinions about what we expect to see. We gather evidence such as:
+
+-   The baseline click-through rate of the button (with its current label) and knowledge of any outside variables that affects click-through rate, e.g. seasonality
+
+-   Effects we have seen from similar previous experiments
+
+-   Qualitative research, such as usability tests, focus groups, and surveys that are related to the test
+
+-   Opinions (including critical views) from interested parties, including experts
+
+## Priors are probability distributions {.smaller}
+
+::: columns
+::: {.column width="30%"}
+We express our prior beliefs about the control group using a **probability distribution**.
+
+This plot shows an example of an extremely uninformative prior -- a uniform prior that says every outcome is equally likely, i.e. naive.
+:::
+
+::: {.column width="70%"}
+```{r}
+plot_beta_pdf <- function(shape1, shape2, group) {
+    p <- seq(0, 100, by = 0.1) / 100 # 0 to 100 percent
+    df <- pmap_dfr(
+        list(shape1, shape2, group),
+        function(shape1, shape2, group) {
+            tibble(
+                p = p,
+                d = dbeta(p, shape1, shape2),
+                group = group
+            )
+        }
+    )
+    labels_df <- tibble(
+        group = group,
+        p = shape1 / (shape1 + shape2),
+        d = dbeta(p, shape1, shape2) / 2,
+        label = glue("Beta({shape1}, {shape2})")
+    )
+    ggplot(df) +
+        aes(x = p, y = d, fill = group) +
+        geom_area(alpha = 0.5, position = position_identity()) +
+        geom_line(aes(colour = group), alpha = 0.5) +
+        geom_text(aes(label = label), data = labels_df) +
+        scale_x_continuous(labels = scales::percent) +
+        labs(
+            subtitle = "Probability density function (PDF)",
+            x = "Click-through rate",
+            y = "Probability density",
+            colour = "Group",
+            fill = "Group"
+        )
+}
+
+experiment_groups <- c("control", "treatment")
+
+plot_beta_pdf(1, 1, group = factor("control", levels = experiment_groups)) +
+    labs(
+        title = "Prior for click-through rate of control group"
+    )
+```
+:::
+:::
+
+::: callout-tip
+The **Beta distribution** is a **probability density function (PDF)** with two **shape parameters**: $B(shape1, shape2)$. It's used to describe proportions, such click-through rate.
+:::
+
+::: notes
+The total area under the curve will always add to 100%. That is, the curve represents all possibilities regardless of what shape parameters are used.
+:::
+
+## Something a little more informative {.smaller}
+
+```{r}
+plot_beta_pdf(4, 7, group = factor("control", levels = experiment_groups)) +
+    labs(
+        title = "Prior for click-through rate of control group"
+    )
+```
+
+As the curve narrows, notice how the shape parameters of the Beta distribution increase.
+
+## Something even more informative {.smaller}
+
+```{r}
+plot_beta_pdf(12, 28, group = factor("control", levels = experiment_groups)) +
+    labs(
+        title = "Prior for click-through rate of control group"
+    )
+```
+
+::: aside
+::: columns
+::: {.column width="80%"}
+The shape parameters (`shape1` and `shape2`) of the Beta distribution can be thought of as counts of **successes** and **failures**, respectively. Therefore, the mean probability of success (i.e. average click-through rate) is simply calculated with this formula:
+:::
+
+::: {.column width="20%"}
+$$
+\frac{shape1}{shape1 + shape2}
+$$
+:::
+:::
+:::
+
+::: notes
+The shape parameters are actually slightly more than the count of successes and failures, i.e. $successes = \alpha - 1$ and $failures = \beta - 1$, or $successes = \alpha - 0.5$ and $failures = \beta - 0.5$ if using Jeffreys prior.
+:::
+
+## Let's say we've settled on this: {.smaller}
+
+```{r}
+plot_beta_pdf(120, 288, group = factor("control", levels = experiment_groups)) +
+    labs(
+        title = "Prior for click-through rate of control group"
+    )
+```
+
+The more confident we are about our beliefs, the narrower the curve.
+
+::: notes
+The mean of this curve is: $\mu = \frac{\alpha}{\alpha + \beta}$
+
+The standard deviation of this curve is: $\sigma = \sqrt{\frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)}}$
+
+Where $\alpha$ and $\beta$ represent the first and second shape parameters of the Beta distribution, respectively.
+
+Through substitution and rearrangement, you can determine $\alpha$ and $\beta$ from $\mu$ and $\sigma$.
+:::
+
+## What about the treatment group? {.smaller}
+
+-   We expect that the click-through rates of the treatment and control groups will be correlated.
+
+-   We don't know how correlated they will be, but we're not expecting a dramatic difference between them.
+
+-   We hope that the click-through rate of the treatment group will be an improvement, but we're open to other possibilities.
+
+-   We're more confident than not that the click-through rate of the treatment group will be an improvement over control.
+
+-   We don't want to bias the results of the experiment in favour of treatment or control, or towards a conclusion of there being a different or no difference.
+
+## We've settled on these priors:
+
+```{r}
+priors <- tibble(
+    group = factor(c("control", "treatment"), levels = experiment_groups),
+    shape1 = c(120, 27),
+    shape2 = c(288, 60)
+)
+
+do.call(plot_beta_pdf, priors) +
+    labs(
+        title = "Prior click-through rates of control and treatment groups"
+    )
+```
+
+# Running a Bayesian A/B test
+
+## Prior agreement {.smaller}
+
+Agreement must be reached on the priors before collecting and analysing data from the experiment.
+
+Once we've agreed on the priors and have locked them in, we can start the experiment.
+
+Here's a summary of the priors we have chosen:
+
+```{r}
+#| echo: true
+priors %>% 
+    mutate(
+        mean = (shape1 / (shape1 + shape2)) %>% 
+            scales::percent(),
+        sd = sqrt(
+            shape1 * shape2 /
+                ((shape1 + shape2) ^ 2 * (shape1 + shape2 + 1))
+        ) %>%
+            scales::percent(suffix = " p.p.")
+    )
+```
+
+::: notes
+It's important to not change your original priors after seeing data collected from the experiment. Doing so is effectively double-dipping, whereby your priors are being influenced by the data you have collected.
+:::
+
+## Let's run a simulated experiment
+
+```{r}
+true_ctr <- c(control = 32, treatment = 35) / 100
+```
+
+Let's pretend that there's some true theoretical click-through rate for the control and treatment groups, `r scales::percent(true_ctr["control"])` and `r scales::percent(true_ctr["treatment"])` respectively. That equates to a relative uplift of `r scales::percent(true_ctr["treatment"] / true_ctr["control"] - 1, accuracy = 0.1)`.
+
+::: callout-note
+Remember that this is just a hypothetical simulation. We wouldn't know these in a real experiment ¯\\\_(ツ)\_/¯.
+:::
+
+If we're successful at applying Bayesian inference then we should hope to see (but can't guarantee due to randomness) results that somewhat match with these theoretical CTRs.
+
+## 1 day since the experiment started...
+
+```{r}
+avg_daily_users <- 150
+
+experiment_simulator <- function(rate_of_users, true_ctr) {
+    experiment_groups <- names(true_ctr)
+    n_users <- rpois(1, lambda = rate_of_users)
+    group_assignment <- rbinom(n_users, length(experiment_groups) - 1, prob = 0.5) %>% 
+        factor(labels = experiment_groups)
+    group_sizes <- table(group_assignment)
+    clicks_by_group <- map2(group_sizes, true_ctr, rbernoulli)
+    map_dfr(clicks_by_group, function(clicks) {
+        list(
+            click_data = list(clicks),
+            clicked = sum(clicks),
+            not_clicked = sum(!clicks)
+        )
+    }, .id = "group") %>% 
+        mutate(group = factor(group, levels = experiment_groups))
+}
+```
+
+Let's pretend that on average `r avg_daily_users` users enter our experiment each day, and we've received the following data from day 1:
+
+```{r}
+experiment_data <- experiment_simulator(avg_daily_users, true_ctr)
+
+experiment_data %>%
+    mutate(
+        CTR = scales::percent(clicked / (clicked + not_clicked)),
+        total_users = clicked + not_clicked
+    ) %>% 
+    select(group, total_users, clicked, not_clicked, CTR)
+```
+
+::: notes
+Our experiment simulator randomly selects users and assigns them to each group using a Poisson process. It then randomly chooses which users had clicked using Bernoulli trials (e.g. coin flips).
+:::
+
+## Let's now incorporate our priors {.smaller}
+
+::: columns
+::: {.column width="50%"}
+For each experiment group, we derive our **posterior** shape parameters through simple arithmetic addition:
+
+::: {.fragment fragment-index="1"}
+-   Increment the first shape parameter by the count users who had **clicked**
+:::
+
+::: {.fragment fragment-index="2"}
+-   Increment the second shape parameter by the count users who **didn't click**
+:::
+:::
+
+::: {.column width="50%"}
+```{r}
+posterior_update <- function(priors, experiment_data) {
+    experiment_data %>%
+        left_join(priors, by = "group") %>% 
+        rename(prior_shape1 = shape1, prior_shape2 = shape2) %>% 
+        select(-click_data) %>% 
+        mutate(
+            posterior_shape1 = prior_shape1 + clicked,
+            posterior_shape2 = prior_shape2 + not_clicked
+        )    
+}
+
+posteriors <- priors %>% posterior_update(experiment_data)
+
+posteriors_long <- posteriors %>% 
+    gather(key = "count", value = "value", -group, factor_key = TRUE) %>% 
+    spread(group, value) %>% 
+    mutate(count = count %>% fct_relevel(
+        c(
+            "prior_shape1", "clicked", "posterior_shape1",
+            "prior_shape2", "not_clicked", "posterior_shape2"
+        )
+    )) %>% 
+    arrange(count)
+```
+
+::: {.fragment fragment-index="1"}
+```{r}
+posteriors_long %>% filter(count %in% c("prior_shape1", "clicked", "posterior_shape1"))
+```
+:::
+
+::: {.fragment fragment-index="2"}
+```{r}
+posteriors_long %>% filter(count %in% c("prior_shape2", "not_clicked", "posterior_shape2"))
+```
+:::
+:::
+:::
+
+::: notes
+The process of incorporating data with priors is called Bayesian updating. The data generated follows a Bernoulli distribution (Binomial with 1 trial). The prior follows a Beta distribution, which is conjugate to the Binomial distribution.
+:::
+
+## Posterior distribution of each group
+
+```{r}
+do.call(
+    plot_beta_pdf,
+    posteriors %>% select(
+        group = group,
+        shape1 = posterior_shape1,
+        shape2 = posterior_shape2
+    )
+) +
+    labs(
+        title = "Posterior click-through rates of control and treatment groups"
+    )
+```
+
+We have now updated our beliefs. These posteriors can now be thought of as our updated priors.
+
+## Another six days later...
+
+We've now collected more data, so let's update our priors to form new posteriors.
+
+```{r}
+new_experiment_data <- experiment_simulator(
+    avg_daily_users * 6, true_ctr
+)
+posteriors <- posteriors %>%
+    select(
+        group = group,
+        shape1 = posterior_shape1,
+        shape2 = posterior_shape2
+    ) %>% 
+    posterior_update(new_experiment_data)
+```
+
+```{r}
+do.call(
+    plot_beta_pdf,
+    posteriors %>% select(
+        group = group,
+        shape1 = posterior_shape1,
+        shape2 = posterior_shape2
+    )
+) +
+    labs(
+        title = "Posterior click-through rates of control and treatment groups"
+    )
+```
+
+## Another three weeks later...
+
+We've now collected even more data, so let's again update our priors to form new posteriors.
+
+```{r}
+new_experiment_data <- experiment_simulator(
+    avg_daily_users * 7 * 3, true_ctr
+)
+posteriors <- posteriors %>%
+    select(
+        group = group,
+        shape1 = posterior_shape1,
+        shape2 = posterior_shape2
+    ) %>% 
+    posterior_update(new_experiment_data)
+```
+
+```{r}
+do.call(
+    plot_beta_pdf,
+    posteriors %>% select(
+        group = group,
+        shape1 = posterior_shape1,
+        shape2 = posterior_shape2
+    )
+) +
+    labs(
+        title = "Posterior click-through rates of control and treatment groups"
+    )
+```
+
+# Posterior analysis
+
+Statistical inferences using the posterior distributions
+
+## Monte Carlo simulation {.smaller}
+
+::: columns
+::: {.column width="65%"}
+We can draw a very very large number of random samples from our posterior distributions to make inferences about the experiment.
+
+This is called Monte Carlo simulation -- named after a well known casino.
+
+::: callout-note
+The more samples drawn, the greater the reliability and precision of the inferences you make, but this comes at the cost of computational time and memory. Nowadays, computer processing speed and memory are more than adequate for what we need.
+:::
+:::
+
+::: {.column width="35%"}
+[![Credits: Sam Garza from Los Angeles, USA, CC BY 2.0, via Wikimedia Commons](Real_Monte_Carlo_Casino.jpg){fig-alt="Monte Carlo Casino, Monaco, France" fig-align="center"}](https://creativecommons.org/licenses/by/2.0)
+:::
+:::
+
+```{r}
+simulation_size <- 100
+```
+
+## `r scales::number(simulation_size)` simulations {.smaller}
+
+Let's start slowly by drawing `r scales::number(simulation_size)` random samples from our distributions and plotting them using histograms...
+
+::: columns
+::: {.column width="55%"}
+```{r}
+draw_posterior_samples <- function(posteriors, simulation_size) {
+    posteriors %>% 
+        rowwise() %>% 
+        mutate(
+            sim_id = list(1:simulation_size),
+            ctr = list(
+                rbeta(
+                    n = simulation_size,
+                    shape1 = posterior_shape1,
+                    shape2 = posterior_shape2
+                )
+            )
+        ) %>% 
+        select(group, sim_id, ctr) %>% 
+        unnest(cols = c(sim_id, ctr))
+}
+
+posterior_samples <- draw_posterior_samples(posteriors, simulation_size)
+```
+
+::: {.fragment .fade-up}
+Here's are some of our Monte Carlo samples:
+
+```{r}
+posterior_samples %>% 
+    spread(group, ctr) %>% 
+    mutate(
+        uplift = treatment / control - 1,
+        beats_control = treatment > control
+    ) %>% 
+    select(-sim_id) %>% 
+    head(n = 7) %>% 
+    knitr::kable(digits = 3)
+```
+:::
+:::
+
+::: {.column width="45%"}
+::: fragment
+```{r fig.asp=1, fig.width=5}
+plot_posterior_samples <- function(posterior_samples, bins = 100, animate = FALSE) {
+    posterior_samples <- posterior_samples %>% 
+        mutate(
+            frame = cut(log(sim_id), breaks = 10, labels = FALSE)
+        )
+    p <- ggplot(posterior_samples) +
+        facet_wrap(~group, ncol = 1) +
+        aes(ctr, fill = group) +
+        geom_histogram(bins = bins) +
+        scale_x_continuous(labels = scales::percent) +
+        labs(
+            title = "Posterior distributions",
+            subtitle = "Click-through rate",
+            x = "Click-through rate",
+            fill = "Group",
+            y = "Count of simulations"
+        ) +
+        guides(fill = guide_none())
+    
+    if(animate) {
+        p <- p +
+            transition_manual(frame, cumulative = TRUE) +
+            view_follow()
+        p <- p %>% 
+            animate(duration = 5, renderer = gifski_renderer(loop = FALSE))
+    }
+    
+    p
+    
+}
+
+plot_posterior_samples(posterior_samples, animate = render_animations, bins = 50)
+```
+:::
+:::
+:::
+
+## Let's now beef it up a bit...
+
+```{r}
+simulation_size <- 1000000
+```
+
+We'll now draw `r scales::number(simulation_size)` samples...
+
+::: fragment
+```{r}
+posterior_samples <- draw_posterior_samples(posteriors, simulation_size)
+
+plot_posterior_samples(posterior_samples, animate = render_animations)
+```
+:::
+
+::: notes
+Notice how these histograms follow the same distribution as our posteriors. That is because these samples have been drawn at random acording to those posterior distributions.
+:::
+
+## We can now make some inferences
+
+Here's a summary of our posterior predictive distributions as a results of the `r scales::number(simulation_size)` simulations:
+
+```{r}
+posterior_comparison <- posterior_samples %>% 
+    spread(group, ctr) %>% 
+    mutate(
+        uplift = treatment / control - 1,
+        beats_control = treatment > control
+    )
+
+posterior_comparison %>% 
+    select(-sim_id) %>% 
+    summary()
+```
+
+What is the probability that the CTR of the treatment is greater than that of control?
+
+```{r}
+#| echo: true
+#| output-location: column-fragment
+with(
+    posterior_comparison,
+    mean(beats_control)
+) %>% scales::percent(0.01)
+```
+
+::: notes
+Out of our `r scales::number(simulation_size)` simulations, we can see how often the treatment bet control. This tells us the probability that treatment is the winner.
+
+If we filtered our simulations to those where control won and calculated the median CTR uplift, and did the same for cases where treatment won, we can determine the expected losses of choosing either variant as the winner. We should prefer the variant with the lowest expected loss or continue to run the experiment longer to improve our confidence.
+:::
+
+## Posterior distribution of the CTR uplift
+
+```{r}
+p <- ggplot(
+    posterior_comparison %>% 
+        mutate(
+            frame = cut(log(sim_id), breaks = 10, labels = FALSE)
+        )
+) +
+    aes(
+        uplift,
+        fill = factor(if_else(beats_control, "Yes", "No"), levels = c("No", "Yes"))
+    ) +
+    geom_histogram(bins = 1000) +
+    scale_x_continuous(labels = scales::percent) +
+    labs(
+        title = "Uplift to click-through rate",
+        subtitle = "Treatment relative to control",
+        x = "Uplift to click-through rate",
+        y = "Count of simulations",
+        fill = "Does the treatment\nbeat control?"
+    )
+
+if (render_animations) {
+    p <- p +
+        transition_manual(frame, cumulative = TRUE) +
+        view_follow()
+    
+    p <- p %>% 
+        animate(duration = 5, renderer = gifski_renderer(loop = FALSE))
+}
+
+p
+```
+
+# When to stop a Bayesian A/B test?
+
+## If using uninformative priors...
+
+If your original priors are uninformative or too weak then you face the same risks as frequentist experiments.
+
+Perform **power analysis** ahead of running the experiment. This is to determine the required sample size before any inferences shall be made.
+
+Prior to the experiment commencing, decide on:
+
+-   The **minimum detectable effect** size
+
+-   The accepted **false positive rate**
+
+-   The accepted **false negative rate**
+
+## If using informative priors...
+
+If your priors are relatively informative and chosen carefully, then this can reduce the chances of false positives and negatives. But:
+
+-   Be careful to not bias the results of the experiment.
+
+-   Power analysis is still recommended in order to gauge the worse case scenario for how long the experiment might run.
+
+Bayesian inference, with informative priors, can make it possible to end an experiment early.
+
+## If deciding to end early...
+
+Ask yourself:
+
+-   Has the experiment run for at least a couple of cycles? (e.g. at least two full weeks)
+
+-   Have the results stabilised? Is there a clear winner?
+
+-   Could it be worth running longer to learn more?
+
+-   What are the risks of continuing or ending now? What if the results you see are just a fluke and are therefore misguiding you? What is the impact of making the wrong choice? What are the chances?
+
+# Summary and some final remarks
+
+## Before starting an experiment {.smaller}
+
+Gather prior knowledge and articulate beliefs:
+
+-   Establish a baseline - what do you know about the control group?
+
+-   What do you expect the effect of the treatment to be? How sure are you?
+
+Express those beliefs and knowledge as distributions - these are your priors for your control and treatment groups.
+
+::: callout-important
+Ensure that the priors encapsulate the collective knowledge and beliefs of all interested parties so that there is agreement. This helps to avoid the results from being challenged later. This is because everyone would have already had an opportunity to provide their opinions.
+:::
+
+## Running the experiment
+
+-   Start the experiment, gather data, and update your priors to form posteriors
+
+-   Draw inferences by running a large number of Monte Carlo simulations using the posteriors
+
+-   Know when to end the experiment -- try to plan for this ahead of running the experiment
+
+## Final remarks {.smaller}
+
+Null-hypothesis significance testing (NHST) is not what Bayesian is for:
+
+-   Bayesian tells you the probability of some effect being within some range, given the data. I.e. Given everything we know so far, what are the risks associated with the choices we have?
+
+-   NHST tells you the probability of data at least as extreme as what has been observed, given there is no real effect. I.e. How ridiculous would this outcome be if it were due to chance alone?
+
+NHST is often referred to as the frequentist approach, where decisions are made using p-values and some arbitrary threshold $\alpha$ (i.e. false positive rate).
+
+Unlike NHST, Bayesian A/B testing doesn't give you a yes/no answer -- it instead informs you about the probabilities and risks associated with the choices you have.
+
+# Questions?
+
+::: callout-tip
+These presentation slides and simulations have been produced in RStudio using Quarto. You can download the source code and slides from Github at: <https://github.com/jdeboer/measurecamp2022>
+:::
