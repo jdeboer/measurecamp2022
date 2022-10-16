@@ -7,4 +7,4 @@ of R packages. The presentation was compiled using Quarto within RStudio.
 
 The source code for the simulations and presentation can be found in `bayes-ab-testing.qmd`.
 
-The full output, including R code, has also been rendered to an HTML document.
+The full output, including R code, has also been rendered to HTML and PDF (dark mode and light mode) documents.
