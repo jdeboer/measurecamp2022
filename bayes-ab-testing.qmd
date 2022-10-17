@@ -9,8 +9,8 @@ format:
         toc-title: "Agenda"
         footer: "Johann de Boer - Sydney Measurecamp 2022"
         scrollable: true
-        df-print: kable
         theme: dark
+        df-print: kable
         slide-number: true
         logo: "Logo_MeasureCamp_SYD_2015-3.png"
     html: 
@@ -32,6 +32,7 @@ library(glue)
 library(ggdark)
 library(gganimate)
 theme_set(dark_theme_gray())
+render_animations <- FALSE
 render_animations <- TRUE
 ```
 
@@ -90,13 +91,13 @@ Before running an experiment, we form opinions about what we expect to see. We g
 ## Priors are probability distributions {.smaller}
 
 ::: columns
-::: {.column width="30%"}
-We express our prior beliefs about the control group using a **probability distribution**.
+::: {.column width="40%"}
+We express our prior beliefs about the click-through rate of control group using a **probability distribution**.
 
-This plot shows an example of an extremely uninformative prior -- a uniform prior that says every outcome is equally likely, i.e. naive.
+This plot shows an example of an extremely uninformative prior -- a uniform prior that says any range of click-through rate is as probable as any other equally wide range, i.e. naive.
 :::
 
-::: {.column width="70%"}
+::: {.column width="60%"}
 ```{r}
 plot_beta_pdf <- function(shape1, shape2, group) {
     p <- seq(0, 100, by = 0.1) / 100 # 0 to 100 percent
@@ -207,6 +208,26 @@ The standard deviation of this curve is: $\sigma = \sqrt{\frac{\alpha\beta}{(\al
 Where $\alpha$ and $\beta$ represent the first and second shape parameters of the Beta distribution, respectively.
 
 Through substitution and rearrangement, you can determine $\alpha$ and $\beta$ from $\mu$ and $\sigma$.
+
+$$
+v = \frac{\mu (1 - p)}{\sigma ^ 2} - 1
+$$
+
+$$
+\alpha = \mu v
+$$
+
+$$
+\beta = (1 - \mu) v
+$$
+
+Calculate v, a temporary variable, using this formula:
+v = (𝜇 ✕ [1 - 𝜇] ÷ 𝜎2) - 1
+From there, we can now derive the 𝛼 and 𝛽 parameters:
+𝛼 = 𝜇 ✕ v
+𝛽 = (1 - 𝜇) ✕ v
+
+
 :::
 
 ## What about the treatment group? {.smaller}
@@ -324,6 +345,8 @@ Our experiment simulator randomly selects users and assigns them to each group u
 
 ## Let's now incorporate our priors {.smaller}
 
+Posteriors represent your updated prior beliefs once you've incorporated experiment data. Like priors, posteriors represent your new beliefs about the parameter of interest, which in our case is click-through rate.
+
 ::: columns
 ::: {.column width="50%"}
 For each experiment group, we derive our **posterior** shape parameters through simple arithmetic addition:
@@ -386,6 +409,8 @@ The process of incorporating data with priors is called Bayesian updating. The d
 
 ## Posterior distribution of each group
 
+We have now updated our beliefs. These posteriors can now be thought of as our updated priors.
+
 ```{r}
 do.call(
     plot_beta_pdf,
@@ -400,11 +425,9 @@ do.call(
     )
 ```
 
-We have now updated our beliefs. These posteriors can now be thought of as our updated priors.
-
 ## Another six days later...
 
-We've now collected more data, so let's update our priors to form new posteriors.
+We've now collected more data, so let's update our priors to form new posteriors for the click-through rate of each group.
 
 ```{r}
 new_experiment_data <- experiment_simulator(
@@ -600,7 +623,7 @@ Notice how these histograms follow the same distribution as our posteriors. That
 
 ## We can now make some inferences
 
-Here's a summary of our posterior predictive distributions as a result of the `r scales::number(simulation_size)` simulations:
+Here's a summary of our posterior samples for click-through rate as a result of the `r scales::number(simulation_size)` simulations:
 
 ```{r}
 posterior_comparison <- posterior_samples %>% 
@@ -678,7 +701,7 @@ If your original priors are uninformative or too weak, then you face the same ri
 
 Perform **power analysis** ahead of running the experiment. This is to determine the required sample size before any inferences are made.
 
-Prior to the experiment commencing, decide on:
+Before commencing the experiment, decide on:
 
 -   The **minimum detectable effect** size
 
@@ -726,9 +749,9 @@ Ensure that the priors encapsulate the collective knowledge and beliefs of all i
 
 ## Running the experiment
 
--   Start the experiment, gather data, and update your priors to form posteriors
+-   Start the experiment, gather data, and update your priors to form posteriors about the parameter of interest
 
--   Draw inferences by running a large number of Monte Carlo simulations using the posteriors
+-   Draw inferences by running a large number of Monte Carlo simulations using the posterior distributions
 
 -   Know when to end the experiment -- try to plan for this ahead of running the experiment
 
@@ -744,7 +767,13 @@ NHST is often referred to as the frequentist approach, where decisions are made 
 
 Unlike NHST, Bayesian A/B testing doesn't give you a yes/no answer -- it instead informs you about the probabilities and risks associated with the choices you have.
 
-# Questions?
+# Questions? {.smaller}
+
+Further topics that might interest you:
+
+-   **Bayesian Generalised Linear Models** to better isolate the effect of the treatment from other predictors (such as seasonality, device types, time of day, etc.)
+
+-   **Survival Analysis**, such as **Kaplan Meier**, to analyse lagged conversion outcomes (such as with trial periods) in order to make the most of all of the data you've collected.
 
 ::: callout-tip
 These presentation slides and simulations have been produced in RStudio using Quarto. You can download the source code and slides from Github at: <https://github.com/jdeboer/measurecamp2022>

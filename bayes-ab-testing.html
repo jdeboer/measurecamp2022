@@ -10,6 +10,7 @@
   <meta name="generator" content="quarto-1.0.36">
 
   <meta name="author" content="Johann de Boer">
+  <meta name="dcterms.date" content="2022-10-22">
   <title>Introduction to Bayesian A/B testing</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -386,6 +387,7 @@
 <section id="title-slide" class="center">
   <h1 class="title">Introduction to Bayesian A/B testing</h1>
   <p class="author">Johann de Boer</p>
+  <p class="date">2022-10-22</p>
 </section>
 <section id="TOC">
 <nav role="doc-toc"> 
@@ -467,10 +469,10 @@
 <section id="priors-are-probability-distributions" class="slide level2 smaller">
 <h2>Priors are probability distributions</h2>
 <div class="columns">
-<div class="column" style="width:30%;">
-<p>We express our prior beliefs about the control group using a <strong>probability distribution</strong>.</p>
-<p>This plot shows an example of an extremely uninformative prior – a uniform prior that says every outcome is equally likely, i.e.&nbsp;naive.</p>
-</div><div class="column" style="width:70%;">
+<div class="column" style="width:40%;">
+<p>We express our prior beliefs about the click-through rate of control group using a <strong>probability distribution</strong>.</p>
+<p>This plot shows an example of an extremely uninformative prior – a uniform prior that says any range of click-through rate is as probable as any other equally wide range, i.e.&nbsp;naive.</p>
+</div><div class="column" style="width:60%;">
 <div class="cell">
 <div class="cell-output-display">
 <p><img data-src="bayes-ab-testing_files/figure-revealjs/unnamed-chunk-2-1.png" width="960"></p>
@@ -553,6 +555,16 @@
 <p>The standard deviation of this curve is: <span class="math inline">\(\sigma = \sqrt{\frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)}}\)</span></p>
 <p>Where <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> represent the first and second shape parameters of the Beta distribution, respectively.</p>
 <p>Through substitution and rearrangement, you can determine <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> from <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span>.</p>
+<p><span class="math display">\[
+v = \frac{\mu (1 - p)}{\sigma ^ 2} - 1
+\]</span></p>
+<p><span class="math display">\[
+\alpha = \mu v
+\]</span></p>
+<p><span class="math display">\[
+\beta = (1 - \mu) v
+\]</span></p>
+<p>Calculate v, a temporary variable, using this formula: v = (𝜇 ✕ [1 - 𝜇] ÷ 𝜎2) - 1 From there, we can now derive the 𝛼 and 𝛽 parameters: 𝛼 = 𝜇 ✕ v 𝛽 = (1 - 𝜇) ✕ v</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -689,17 +701,17 @@
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">control</td>
-<td style="text-align: right;">62</td>
-<td style="text-align: right;">17</td>
-<td style="text-align: right;">45</td>
-<td style="text-align: left;">27.4%</td>
+<td style="text-align: right;">76</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">54</td>
+<td style="text-align: left;">28.9%</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">treatment</td>
-<td style="text-align: right;">97</td>
-<td style="text-align: right;">32</td>
-<td style="text-align: right;">65</td>
-<td style="text-align: left;">33.0%</td>
+<td style="text-align: right;">70</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">46</td>
+<td style="text-align: left;">34.3%</td>
 </tr>
 </tbody>
 </table>
@@ -722,6 +734,7 @@
 </section>
 <section id="lets-now-incorporate-our-priors" class="slide level2 smaller">
 <h2>Let’s now incorporate our priors</h2>
+<p>Posteriors represent your updated prior beliefs once you’ve incorporated experiment data. Like priors, posteriors represent your new beliefs about the parameter of interest, which in our case is click-through rate.</p>
 <div class="columns">
 <div class="column" style="width:50%;">
 <p>For each experiment group, we derive our <strong>posterior</strong> shape parameters through simple arithmetic addition:</p>
@@ -759,13 +772,13 @@
 </tr>
 <tr class="even">
 <td style="text-align: left;">clicked</td>
-<td style="text-align: right;">17</td>
-<td style="text-align: right;">32</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">24</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">posterior_shape1</td>
-<td style="text-align: right;">137</td>
-<td style="text-align: right;">59</td>
+<td style="text-align: right;">142</td>
+<td style="text-align: right;">51</td>
 </tr>
 </tbody>
 </table>
@@ -793,13 +806,13 @@
 </tr>
 <tr class="even">
 <td style="text-align: left;">not_clicked</td>
-<td style="text-align: right;">45</td>
-<td style="text-align: right;">65</td>
+<td style="text-align: right;">54</td>
+<td style="text-align: right;">46</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">posterior_shape2</td>
-<td style="text-align: right;">333</td>
-<td style="text-align: right;">125</td>
+<td style="text-align: right;">342</td>
+<td style="text-align: right;">106</td>
 </tr>
 </tbody>
 </table>
@@ -825,12 +838,12 @@
 </section>
 <section id="posterior-distribution-of-each-group" class="slide level2">
 <h2>Posterior distribution of each group</h2>
+<p>We have now updated our beliefs. These posteriors can now be thought of as our updated priors.</p>
 
-<img data-src="bayes-ab-testing_files/figure-revealjs/unnamed-chunk-14-1.png" width="960" class="r-stretch"><p>We have now updated our beliefs. These posteriors can now be thought of as our updated priors.</p>
-</section>
+<img data-src="bayes-ab-testing_files/figure-revealjs/unnamed-chunk-14-1.png" width="960" class="r-stretch"></section>
 <section id="another-six-days-later" class="slide level2">
 <h2>Another six days later…</h2>
-<p>We’ve now collected more data, so let’s update our priors to form new posteriors.</p>
+<p>We’ve now collected more data, so let’s update our priors to form new posteriors for the click-through rate of each group.</p>
 <div class="cell">
 
 </div>
@@ -904,46 +917,46 @@
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">0.294</td>
-<td style="text-align: right;">0.341</td>
-<td style="text-align: right;">0.161</td>
+<td style="text-align: right;">0.307</td>
+<td style="text-align: right;">0.345</td>
+<td style="text-align: right;">0.124</td>
 <td style="text-align: left;">TRUE</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">0.303</td>
-<td style="text-align: right;">0.344</td>
-<td style="text-align: right;">0.137</td>
+<td style="text-align: right;">0.318</td>
+<td style="text-align: right;">0.339</td>
+<td style="text-align: right;">0.066</td>
 <td style="text-align: left;">TRUE</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">0.310</td>
-<td style="text-align: right;">0.368</td>
-<td style="text-align: right;">0.189</td>
-<td style="text-align: left;">TRUE</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">0.309</td>
+<td style="text-align: right;">0.314</td>
 <td style="text-align: right;">0.347</td>
-<td style="text-align: right;">0.123</td>
-<td style="text-align: left;">TRUE</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">0.299</td>
-<td style="text-align: right;">0.377</td>
-<td style="text-align: right;">0.260</td>
+<td style="text-align: right;">0.107</td>
 <td style="text-align: left;">TRUE</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">0.288</td>
-<td style="text-align: right;">0.350</td>
-<td style="text-align: right;">0.214</td>
+<td style="text-align: right;">0.320</td>
+<td style="text-align: right;">0.352</td>
+<td style="text-align: right;">0.097</td>
 <td style="text-align: left;">TRUE</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">0.297</td>
-<td style="text-align: right;">0.336</td>
-<td style="text-align: right;">0.129</td>
+<td style="text-align: right;">0.302</td>
+<td style="text-align: right;">0.362</td>
+<td style="text-align: right;">0.199</td>
 <td style="text-align: left;">TRUE</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.311</td>
+<td style="text-align: right;">0.339</td>
+<td style="text-align: right;">0.091</td>
+<td style="text-align: left;">TRUE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.323</td>
+<td style="text-align: right;">0.322</td>
+<td style="text-align: right;">-0.004</td>
+<td style="text-align: left;">FALSE</td>
 </tr>
 </tbody>
 </table>
@@ -990,16 +1003,16 @@
 </section>
 <section id="we-can-now-make-some-inferences" class="slide level2">
 <h2>We can now make some inferences</h2>
-<p>Here’s a summary of our posterior predictive distributions as a result of the 1 000 000 simulations:</p>
+<p>Here’s a summary of our posterior samples for click-through rate as a result of the 1 000 000 simulations:</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>    control         treatment          uplift         beats_control  
- Min.   :0.2550   Min.   :0.3031   Min.   :-0.03964   Mode :logical  
- 1st Qu.:0.2905   1st Qu.:0.3443   1st Qu.: 0.15030   FALSE:30       
- Median :0.2966   Median :0.3511   Median : 0.18340   TRUE :999970   
- Mean   :0.2967   Mean   :0.3511   Mean   : 0.18455                  
- 3rd Qu.:0.3028   3rd Qu.:0.3579   3rd Qu.: 0.21760                  
- Max.   :0.3392   Max.   :0.3970   Max.   : 0.46371                  </code></pre>
+ Min.   :0.2645   Min.   :0.2927   Min.   :-0.11767   Mode :logical  
+ 1st Qu.:0.3051   1st Qu.:0.3332   1st Qu.: 0.06168   FALSE:17793    
+ Median :0.3113   Median :0.3400   Median : 0.09222   TRUE :982207   
+ Mean   :0.3113   Mean   :0.3400   Mean   : 0.09316                  
+ 3rd Qu.:0.3175   3rd Qu.:0.3469   3rd Qu.: 0.12353                  
+ Max.   :0.3556   Max.   :0.3888   Max.   : 0.38065                  </code></pre>
 </div>
 </div>
 <p>What is the probability that the CTR of the treatment is greater than that of control?</p>
@@ -1011,7 +1024,7 @@
 <span id="cb3-4"><a href="#cb3-4"></a>) <span class="sc">%&gt;%</span> scales<span class="sc">::</span><span class="fu">percent</span>(<span class="fl">0.01</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column fragment">
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "100.00%"</code></pre>
+<pre><code>[1] "98.22%"</code></pre>
 </div>
 </div>
 </div>
@@ -1043,7 +1056,7 @@
 <h2>If using uninformative priors…</h2>
 <p>If your original priors are uninformative or too weak, then you face the same risks as with frequentist experiments.</p>
 <p>Perform <strong>power analysis</strong> ahead of running the experiment. This is to determine the required sample size before any inferences are made.</p>
-<p>Prior to the experiment commencing, decide on:</p>
+<p>Before commencing the experiment, decide on:</p>
 <ul>
 <li><p>The <strong>minimum detectable effect</strong> size</p></li>
 <li><p>The accepted <strong>false positive rate</strong></p></li>
@@ -1099,8 +1112,8 @@
 <section id="running-the-experiment" class="slide level2">
 <h2>Running the experiment</h2>
 <ul>
-<li><p>Start the experiment, gather data, and update your priors to form posteriors</p></li>
-<li><p>Draw inferences by running a large number of Monte Carlo simulations using the posteriors</p></li>
+<li><p>Start the experiment, gather data, and update your priors to form posteriors about the parameter of interest</p></li>
+<li><p>Draw inferences by running a large number of Monte Carlo simulations using the posterior distributions</p></li>
 <li><p>Know when to end the experiment – try to plan for this ahead of running the experiment</p></li>
 </ul>
 </section>
@@ -1114,8 +1127,13 @@
 <p>NHST is often referred to as the frequentist approach, where decisions are made using p-values and some arbitrary threshold <span class="math inline">\(\alpha\)</span> (i.e.&nbsp;false positive rate).</p>
 <p>Unlike NHST, Bayesian A/B testing doesn’t give you a yes/no answer – it instead informs you about the probabilities and risks associated with the choices you have.</p>
 </section></section>
-<section id="questions" class="title-slide slide level1 center">
+<section id="questions" class="title-slide slide level1 smaller center">
 <h1>Questions?</h1>
+<p>Further topics that might interest you:</p>
+<ul>
+<li><p><strong>Bayesian Generalised Linear Models</strong> to better isolate the effect of the treatment from other predictors (such as seasonality, device types, time of day, etc.)</p></li>
+<li><p><strong>Survival Analysis</strong>, such as <strong>Kaplan Meier</strong>, to analyse lagged conversion outcomes (such as with trial periods) in order to make the most of all of the data you’ve collected.</p></li>
+</ul>
 <div class="callout callout-tip callout-captioned callout-style-default">
 <div class="callout-body">
 <div class="callout-caption">
