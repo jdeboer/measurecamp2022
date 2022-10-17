@@ -1,6 +1,7 @@
 ---
 title: "Introduction to Bayesian A/B testing"
 author: "Johann de Boer"
+date: "2022-10-22"
 format:
     revealjs:
         toc: true
@@ -16,6 +17,11 @@ format:
         toc: true
         theme: darkly
         df-print: kable
+    pdf: 
+        toc: true
+        df-print: kable
+        number-sections: true
+        papersize: "A4"
 editor: visual
 ---
 
@@ -182,7 +188,10 @@ The shape parameters are actually slightly more than the count of successes and 
 ## Let's say we've settled on this: {.smaller}
 
 ```{r}
-plot_beta_pdf(120, 288, group = factor("control", levels = experiment_groups)) +
+plot_beta_pdf(
+    shape1 = 120, shape2 = 288,
+    group = factor("control", levels = experiment_groups)
+) +
     labs(
         title = "Prior for click-through rate of control group"
     )
@@ -277,7 +286,11 @@ avg_daily_users <- 150
 experiment_simulator <- function(rate_of_users, true_ctr) {
     experiment_groups <- names(true_ctr)
     n_users <- rpois(1, lambda = rate_of_users)
-    group_assignment <- rbinom(n_users, length(experiment_groups) - 1, prob = 0.5) %>% 
+    group_assignment <- rbinom(
+        n = n_users,
+        size = length(experiment_groups) - 1,
+        prob = 0.5
+    ) %>% 
         factor(labels = experiment_groups)
     group_sizes <- table(group_assignment)
     clicks_by_group <- map2(group_sizes, true_ctr, rbernoulli)
@@ -353,13 +366,15 @@ posteriors_long <- posteriors %>%
 
 ::: {.fragment fragment-index="1"}
 ```{r}
-posteriors_long %>% filter(count %in% c("prior_shape1", "clicked", "posterior_shape1"))
+posteriors_long %>% 
+    filter(count %in% c("prior_shape1", "clicked", "posterior_shape1"))
 ```
 :::
 
 ::: {.fragment fragment-index="2"}
 ```{r}
-posteriors_long %>% filter(count %in% c("prior_shape2", "not_clicked", "posterior_shape2"))
+posteriors_long %>%
+    filter(count %in% c("prior_shape2", "not_clicked", "posterior_shape2"))
 ```
 :::
 :::
@@ -522,7 +537,9 @@ posterior_samples %>%
 ::: {.column width="45%"}
 ::: fragment
 ```{r fig.asp=1, fig.width=5}
-plot_posterior_samples <- function(posterior_samples, bins = 100, animate = FALSE) {
+plot_posterior_samples <- function(
+        posterior_samples, bins = 100, animate = FALSE
+) {
     posterior_samples <- posterior_samples %>% 
         mutate(
             frame = cut(log(sim_id), breaks = 10, labels = FALSE)
@@ -553,7 +570,8 @@ plot_posterior_samples <- function(posterior_samples, bins = 100, animate = FALS
     
 }
 
-plot_posterior_samples(posterior_samples, animate = render_animations, bins = 50)
+posterior_samples %>% 
+    plot_posterior_samples(animate = render_animations, bins = 50)
 ```
 :::
 :::
@@ -571,7 +589,8 @@ We'll now draw `r scales::number(simulation_size)` samples...
 ```{r}
 posterior_samples <- draw_posterior_samples(posteriors, simulation_size)
 
-plot_posterior_samples(posterior_samples, animate = render_animations)
+posterior_samples %>% 
+    plot_posterior_samples(animate = render_animations)
 ```
 :::
 
@@ -624,7 +643,10 @@ p <- ggplot(
 ) +
     aes(
         uplift,
-        fill = factor(if_else(beats_control, "Yes", "No"), levels = c("No", "Yes"))
+        fill = factor(
+            if_else(beats_control, "Yes", "No"),
+            levels = c("No", "Yes")
+        )
     ) +
     geom_histogram(bins = 1000) +
     scale_x_continuous(labels = scales::percent) +
