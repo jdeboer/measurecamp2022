@@ -428,7 +428,7 @@
 </div>
 <div class="callout-content">
 <p>Early on during an experiment, differences between these groups could simply be due to the random allocation of participants. As the groups get larger, these random differences will diminish, bringing us closer to the difference caused by the treatment.</p>
-<p>Applying Bayesian inference effectively gives the experiment a guided head start by including more data in the form of <strong>priors</strong>.</p>
+<p>Applying Bayesian inference effectively gives the experiment a guided head start by including more data (probabilistic data, not real data) in the form of <strong>priors</strong>.</p>
 </div>
 </div>
 </div>
@@ -470,12 +470,16 @@
 <h2>Priors are probability distributions</h2>
 <div class="columns">
 <div class="column" style="width:40%;">
-<p>We express our prior beliefs about the click-through rate of control group using a <strong>probability distribution</strong>.</p>
+<p>We express our prior beliefs about the click-through rate of the control group using a <strong>probability distribution</strong>.</p>
+<div class="fragment" data-fragment-index="1">
 <p>This plot shows an example of an extremely uninformative prior – a uniform prior that says any range of click-through rate is as probable as any other equally wide range, i.e.&nbsp;naive.</p>
+</div>
 </div><div class="column" style="width:60%;">
+<div class="fragment" data-fragment-index="1">
 <div class="cell">
 <div class="cell-output-display">
 <p><img data-src="bayes-ab-testing_files/figure-revealjs/unnamed-chunk-2-1.png" width="960"></p>
+</div>
 </div>
 </div>
 </div>
@@ -701,17 +705,17 @@ v = \frac{\mu (1 - p)}{\sigma ^ 2} - 1
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">control</td>
-<td style="text-align: right;">76</td>
-<td style="text-align: right;">22</td>
-<td style="text-align: right;">54</td>
-<td style="text-align: left;">28.9%</td>
+<td style="text-align: right;">75</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: left;">33.3%</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">treatment</td>
-<td style="text-align: right;">70</td>
-<td style="text-align: right;">24</td>
-<td style="text-align: right;">46</td>
-<td style="text-align: left;">34.3%</td>
+<td style="text-align: right;">71</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: left;">28.2%</td>
 </tr>
 </tbody>
 </table>
@@ -734,7 +738,7 @@ v = \frac{\mu (1 - p)}{\sigma ^ 2} - 1
 </section>
 <section id="lets-now-incorporate-our-priors" class="slide level2 smaller">
 <h2>Let’s now incorporate our priors</h2>
-<p>Posteriors represent your updated prior beliefs once you’ve incorporated experiment data. Like priors, posteriors represent your new beliefs about the parameter of interest, which in our case is click-through rate.</p>
+<p>Posteriors represent your updated beliefs once you’ve incorporated experiment data with your priors. Like priors, posteriors represent your beliefs about the metric of interest, which in our case is click-through rate.</p>
 <div class="columns">
 <div class="column" style="width:50%;">
 <p>For each experiment group, we derive our <strong>posterior</strong> shape parameters through simple arithmetic addition:</p>
@@ -772,13 +776,13 @@ v = \frac{\mu (1 - p)}{\sigma ^ 2} - 1
 </tr>
 <tr class="even">
 <td style="text-align: left;">clicked</td>
-<td style="text-align: right;">22</td>
-<td style="text-align: right;">24</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">20</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">posterior_shape1</td>
-<td style="text-align: right;">142</td>
-<td style="text-align: right;">51</td>
+<td style="text-align: right;">145</td>
+<td style="text-align: right;">47</td>
 </tr>
 </tbody>
 </table>
@@ -806,13 +810,13 @@ v = \frac{\mu (1 - p)}{\sigma ^ 2} - 1
 </tr>
 <tr class="even">
 <td style="text-align: left;">not_clicked</td>
-<td style="text-align: right;">54</td>
-<td style="text-align: right;">46</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">51</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">posterior_shape2</td>
-<td style="text-align: right;">342</td>
-<td style="text-align: right;">106</td>
+<td style="text-align: right;">338</td>
+<td style="text-align: right;">111</td>
 </tr>
 </tbody>
 </table>
@@ -877,7 +881,7 @@ v = \frac{\mu (1 - p)}{\sigma ^ 2} - 1
 <p><strong>Note</strong></p>
 </div>
 <div class="callout-content">
-<p>The more samples drawn, the greater the reliability and precision of the inferences you make, but this comes at the cost of computational time and memory. Nowadays, computer processing speed and memory are more than adequate for what we need.</p>
+<p>The more samples drawn, the greater the precision of the inferences you make, but this comes at the cost of computational time and memory. Nowadays, computer processing speed and memory are more than adequate for what we need.</p>
 </div>
 </div>
 </div>
@@ -917,46 +921,46 @@ v = \frac{\mu (1 - p)}{\sigma ^ 2} - 1
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">0.307</td>
-<td style="text-align: right;">0.345</td>
-<td style="text-align: right;">0.124</td>
-<td style="text-align: left;">TRUE</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">0.318</td>
-<td style="text-align: right;">0.339</td>
-<td style="text-align: right;">0.066</td>
-<td style="text-align: left;">TRUE</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">0.314</td>
-<td style="text-align: right;">0.347</td>
-<td style="text-align: right;">0.107</td>
-<td style="text-align: left;">TRUE</td>
-</tr>
-<tr class="even">
 <td style="text-align: right;">0.320</td>
-<td style="text-align: right;">0.352</td>
-<td style="text-align: right;">0.097</td>
-<td style="text-align: left;">TRUE</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">0.302</td>
-<td style="text-align: right;">0.362</td>
-<td style="text-align: right;">0.199</td>
+<td style="text-align: right;">0.370</td>
+<td style="text-align: right;">0.155</td>
 <td style="text-align: left;">TRUE</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">0.311</td>
-<td style="text-align: right;">0.339</td>
-<td style="text-align: right;">0.091</td>
+<td style="text-align: right;">0.325</td>
+<td style="text-align: right;">0.366</td>
+<td style="text-align: right;">0.127</td>
 <td style="text-align: left;">TRUE</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">0.323</td>
-<td style="text-align: right;">0.322</td>
-<td style="text-align: right;">-0.004</td>
-<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0.324</td>
+<td style="text-align: right;">0.347</td>
+<td style="text-align: right;">0.071</td>
+<td style="text-align: left;">TRUE</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.321</td>
+<td style="text-align: right;">0.378</td>
+<td style="text-align: right;">0.179</td>
+<td style="text-align: left;">TRUE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.335</td>
+<td style="text-align: right;">0.364</td>
+<td style="text-align: right;">0.086</td>
+<td style="text-align: left;">TRUE</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.309</td>
+<td style="text-align: right;">0.361</td>
+<td style="text-align: right;">0.169</td>
+<td style="text-align: left;">TRUE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.346</td>
+<td style="text-align: right;">0.358</td>
+<td style="text-align: right;">0.036</td>
+<td style="text-align: left;">TRUE</td>
 </tr>
 </tbody>
 </table>
@@ -967,7 +971,7 @@ v = \frac{\mu (1 - p)}{\sigma ^ 2} - 1
 <div class="fragment">
 <div class="cell" data-fig.asp="1">
 <div class="cell-output-display">
-<p><img data-src="bayes-ab-testing_files/figure-revealjs/unnamed-chunk-22-1.gif"></p>
+<p><img data-src="bayes-ab-testing_files/figure-revealjs/unnamed-chunk-22-1.png" width="480"></p>
 </div>
 </div>
 </div>
@@ -983,7 +987,7 @@ v = \frac{\mu (1 - p)}{\sigma ^ 2} - 1
 <div class="fragment">
 <div class="cell">
 <div class="cell-output-display">
-<p><img data-src="bayes-ab-testing_files/figure-revealjs/unnamed-chunk-24-1.gif"></p>
+<p><img data-src="bayes-ab-testing_files/figure-revealjs/unnamed-chunk-24-1.png" width="960"></p>
 </div>
 </div>
 </div>
@@ -1007,12 +1011,12 @@ v = \frac{\mu (1 - p)}{\sigma ^ 2} - 1
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>    control         treatment          uplift         beats_control  
- Min.   :0.2645   Min.   :0.2927   Min.   :-0.11767   Mode :logical  
- 1st Qu.:0.3051   1st Qu.:0.3332   1st Qu.: 0.06168   FALSE:17793    
- Median :0.3113   Median :0.3400   Median : 0.09222   TRUE :982207   
- Mean   :0.3113   Mean   :0.3400   Mean   : 0.09316                  
- 3rd Qu.:0.3175   3rd Qu.:0.3469   3rd Qu.: 0.12353                  
- Max.   :0.3556   Max.   :0.3888   Max.   : 0.38065                  </code></pre>
+ Min.   :0.2793   Min.   :0.3155   Min.   :-0.06901   Mode :logical  
+ 1st Qu.:0.3149   1st Qu.:0.3558   1st Qu.: 0.09895   FALSE:1305     
+ Median :0.3212   Median :0.3628   Median : 0.12940   TRUE :998695   
+ Mean   :0.3212   Mean   :0.3628   Mean   : 0.13044                  
+ 3rd Qu.:0.3275   3rd Qu.:0.3697   3rd Qu.: 0.16097                  
+ Max.   :0.3691   Max.   :0.4156   Max.   : 0.38006                  </code></pre>
 </div>
 </div>
 <p>What is the probability that the CTR of the treatment is greater than that of control?</p>
@@ -1024,7 +1028,7 @@ v = \frac{\mu (1 - p)}{\sigma ^ 2} - 1
 <span id="cb3-4"><a href="#cb3-4"></a>) <span class="sc">%&gt;%</span> scales<span class="sc">::</span><span class="fu">percent</span>(<span class="fl">0.01</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column fragment">
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "98.22%"</code></pre>
+<pre><code>[1] "99.87%"</code></pre>
 </div>
 </div>
 </div>
@@ -1046,7 +1050,7 @@ v = \frac{\mu (1 - p)}{\sigma ^ 2} - 1
 <section id="posterior-distribution-of-the-ctr-uplift" class="slide level2">
 <h2>Posterior distribution of the CTR uplift</h2>
 
-<img data-src="bayes-ab-testing_files/figure-revealjs/unnamed-chunk-27-1.gif" class="r-stretch"></section></section>
+<img data-src="bayes-ab-testing_files/figure-revealjs/unnamed-chunk-27-1.png" width="960" class="r-stretch"></section></section>
 <section>
 <section id="when-to-stop-a-bayesian-ab-test" class="title-slide slide level1 center">
 <h1>When to stop a Bayesian A/B test?</h1>
@@ -1112,13 +1116,11 @@ v = \frac{\mu (1 - p)}{\sigma ^ 2} - 1
 <section id="running-the-experiment" class="slide level2">
 <h2>Running the experiment</h2>
 <ul>
-<li><p>Start the experiment, gather data, and update your priors to form posteriors about the parameter of interest</p></li>
+<li><p>Start the experiment, gather data, and update your priors to form posteriors about the metric of interest</p></li>
 <li><p>Draw inferences by running a large number of Monte Carlo simulations using the posterior distributions</p></li>
 <li><p>Know when to end the experiment – try to plan for this ahead of running the experiment</p></li>
 </ul>
-</section>
-<section id="final-remarks" class="slide level2 smaller">
-<h2>Final remarks</h2>
+<aside class="notes">
 <p>Null-hypothesis significance testing (NHST) is not what Bayesian is for:</p>
 <ul>
 <li><p>Bayesian tells you the probability of some effect being within some range, given the data. I.e. Given everything we know so far, what are the risks associated with the choices we have?</p></li>
@@ -1126,6 +1128,17 @@ v = \frac{\mu (1 - p)}{\sigma ^ 2} - 1
 </ul>
 <p>NHST is often referred to as the frequentist approach, where decisions are made using p-values and some arbitrary threshold <span class="math inline">\(\alpha\)</span> (i.e.&nbsp;false positive rate).</p>
 <p>Unlike NHST, Bayesian A/B testing doesn’t give you a yes/no answer – it instead informs you about the probabilities and risks associated with the choices you have.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section></section>
 <section id="questions" class="title-slide slide level1 smaller center">
 <h1>Questions?</h1>

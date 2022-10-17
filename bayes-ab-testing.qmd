@@ -17,6 +17,7 @@ format:
         toc: true
         theme: darkly
         df-print: kable
+        page-layout: full
     pdf: 
         toc: true
         df-print: kable
@@ -33,7 +34,7 @@ library(ggdark)
 library(gganimate)
 theme_set(dark_theme_gray())
 render_animations <- FALSE
-render_animations <- TRUE
+#render_animations <- TRUE
 ```
 
 # Setting the scene
@@ -52,7 +53,7 @@ We want to know what effect our treatment has.
 ::: callout-tip
 Early on during an experiment, differences between these groups could simply be due to the random allocation of participants. As the groups get larger, these random differences will diminish, bringing us closer to the difference caused by the treatment.
 
-Applying Bayesian inference effectively gives the experiment a guided head start by including more data in the form of **priors**.
+Applying Bayesian inference effectively gives the experiment a guided head start by including more data (probabilistic data, not real data) in the form of **priors**.
 :::
 :::
 
@@ -91,13 +92,23 @@ Before running an experiment, we form opinions about what we expect to see. We g
 ## Priors are probability distributions {.smaller}
 
 ::: columns
+
 ::: {.column width="40%"}
-We express our prior beliefs about the click-through rate of control group using a **probability distribution**.
+
+We express our prior beliefs about the click-through rate of the control group using a **probability distribution**.
+
+::: {.fragment fragment-index="1"}
 
 This plot shows an example of an extremely uninformative prior -- a uniform prior that says any range of click-through rate is as probable as any other equally wide range, i.e. naive.
+
+:::
+
 :::
 
 ::: {.column width="60%"}
+
+::: {.fragment fragment-index="1"}
+
 ```{r}
 plot_beta_pdf <- function(shape1, shape2, group) {
     p <- seq(0, 100, by = 0.1) / 100 # 0 to 100 percent
@@ -140,6 +151,9 @@ plot_beta_pdf(1, 1, group = factor("control", levels = experiment_groups)) +
     )
 ```
 :::
+
+:::
+
 :::
 
 ::: callout-tip
@@ -755,7 +769,7 @@ Ensure that the priors encapsulate the collective knowledge and beliefs of all i
 
 -   Know when to end the experiment -- try to plan for this ahead of running the experiment
 
-## Final remarks {.smaller}
+::: notes
 
 Null-hypothesis significance testing (NHST) is not what Bayesian is for:
 
@@ -766,6 +780,8 @@ Null-hypothesis significance testing (NHST) is not what Bayesian is for:
 NHST is often referred to as the frequentist approach, where decisions are made using p-values and some arbitrary threshold $\alpha$ (i.e. false positive rate).
 
 Unlike NHST, Bayesian A/B testing doesn't give you a yes/no answer -- it instead informs you about the probabilities and risks associated with the choices you have.
+
+:::
 
 # Questions? {.smaller}
 
