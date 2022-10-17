@@ -345,7 +345,7 @@ Our experiment simulator randomly selects users and assigns them to each group u
 
 ## Let's now incorporate our priors {.smaller}
 
-Posteriors represent your updated prior beliefs once you've incorporated experiment data. Like priors, posteriors represent your new beliefs about the parameter of interest, which in our case is click-through rate.
+Posteriors represent your updated beliefs once you've incorporated experiment data with your priors. Like priors, posteriors represent your beliefs about the metric of interest, which in our case is click-through rate.
 
 ::: columns
 ::: {.column width="50%"}
@@ -500,7 +500,7 @@ We can draw a very very large number of random samples from our posterior distri
 This is called Monte Carlo simulation -- named after a well known casino.
 
 ::: callout-note
-The more samples drawn, the greater the reliability and precision of the inferences you make, but this comes at the cost of computational time and memory. Nowadays, computer processing speed and memory are more than adequate for what we need.
+The more samples drawn, the greater the precision of the inferences you make, but this comes at the cost of computational time and memory. Nowadays, computer processing speed and memory are more than adequate for what we need.
 :::
 :::
 
@@ -749,7 +749,7 @@ Ensure that the priors encapsulate the collective knowledge and beliefs of all i
 
 ## Running the experiment
 
--   Start the experiment, gather data, and update your priors to form posteriors about the parameter of interest
+-   Start the experiment, gather data, and update your priors to form posteriors about the metric of interest
 
 -   Draw inferences by running a large number of Monte Carlo simulations using the posterior distributions
 
