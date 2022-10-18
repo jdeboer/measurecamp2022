@@ -225,14 +225,6 @@ $$
 $$
 \beta = (1 - \mu) v
 $$
-
-Calculate v, a temporary variable, using this formula:
-v = (𝜇 ✕ [1 - 𝜇] ÷ 𝜎2) - 1
-From there, we can now derive the 𝛼 and 𝛽 parameters:
-𝛼 = 𝜇 ✕ v
-𝛽 = (1 - 𝜇) ✕ v
-
-
 :::
 
 ## What about the treatment group? {.smaller}
