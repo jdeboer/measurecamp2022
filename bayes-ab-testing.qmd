@@ -469,15 +469,15 @@ Statistical inferences using the posterior distributions
 Let's draw a very large number of random samples from our posterior distributions to make inferences about the experiment.
 
 This is called Monte Carlo simulation -- named after a well known casino.
-
-::: notes
-The more samples drawn, the greater the precision of the inferences you make, but this comes at the cost of computational time and memory. Nowadays, computer processing speed and memory are more than adequate for what we need. Analytical solutions, providing the greatest level of precision, are also sometimes possible.
-:::
 :::
 
 ::: {.column width="40%"}
 [![Credits: Sam Garza from Los Angeles, USA, CC BY 2.0, via Wikimedia Commons](Real_Monte_Carlo_Casino.jpg){fig-alt="Monte Carlo Casino, Monaco, France" fig-align="center"}](https://creativecommons.org/licenses/by/2.0)
 :::
+:::
+
+::: notes
+The more samples drawn, the greater the precision of the inferences you make, but this comes at the cost of computational time and memory. Nowadays, computer processing speed and memory are more than adequate for what we need. Analytical solutions, providing the greatest level of precision, are also sometimes possible.
 :::
 
 ```{r}
