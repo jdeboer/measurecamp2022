@@ -282,16 +282,16 @@ priors %>%
 It's important to not change your original priors after seeing data collected from the experiment. Doing so is effectively double-dipping, whereby your priors are being influenced by the data you have collected.
 :::
 
-## Let's run a simulated experiment
+## Let's run an experiment
 
 ```{r}
 true_ctr <- c(control = 32, treatment = 35) / 100
 ```
 
-Let's pretend that there's some true theoretical click-through rate for the control and treatment groups, `r scales::percent(true_ctr["control"])` and `r scales::percent(true_ctr["treatment"])` respectively. That equates to a relative uplift of `r scales::percent(true_ctr["treatment"] / true_ctr["control"] - 1, accuracy = 0.1)`.
+Let's pretend that there's some true theoretical click-through rate for the control and treatment groups, `r scales::percent(true_ctr["control"])` and `r scales::percent(true_ctr["treatment"])` respectively. That equates to a relative uplift of `r scales::percent(true_ctr["treatment"] / true_ctr["control"] - 1, accuracy = 0.1)`. We'll generate some fake data to mimic a real experiment.
 
 ::: callout-note
-Remember that this is just a hypothetical simulation. We wouldn't know these in a real experiment ¯\\\_(ツ)\_/¯.
+Normally we wouldn't know these theoretical CTRs in a real experiment -- we're doing this just to see how are results compare later.
 :::
 
 If we're successful at applying Bayesian inference then we should hope to see (but can't guarantee due to randomness) results that somewhat match with these theoretical CTRs.
@@ -304,10 +304,9 @@ avg_daily_users <- 150
 experiment_simulator <- function(rate_of_users, true_ctr) {
     experiment_groups <- names(true_ctr)
     n_users <- rpois(1, lambda = rate_of_users)
-    group_assignment <- rbinom(
-        n = n_users,
-        size = length(experiment_groups) - 1,
-        prob = 0.5
+    group_assignment <- sample(
+        seq_along(experiment_groups),
+        size = n_users, replace = TRUE
     ) %>% 
         factor(labels = experiment_groups)
     group_sizes <- table(group_assignment)
@@ -326,9 +325,11 @@ experiment_simulator <- function(rate_of_users, true_ctr) {
 Let's pretend that on average `r avg_daily_users` users enter our experiment each day, and we've received the following data from day 1:
 
 ```{r}
-experiment_data <- experiment_simulator(avg_daily_users, true_ctr)
+experiment_data <- list(
+    batch1 = experiment_simulator(avg_daily_users, true_ctr)
+)
 
-experiment_data %>%
+experiment_data[['batch1']] %>%
     mutate(
         CTR = scales::percent(clicked / (clicked + not_clicked)),
         total_users = clicked + not_clicked
@@ -370,7 +371,7 @@ posterior_update <- function(priors, experiment_data) {
         )    
 }
 
-posteriors <- priors %>% posterior_update(experiment_data)
+posteriors <- posterior_update(priors, experiment_data[['batch1']])
 
 posteriors_long <- posteriors %>% 
     gather(key = "count", value = "value", -group, factor_key = TRUE) %>% 
@@ -406,17 +407,19 @@ The process of incorporating data with priors is called Bayesian updating. The d
 
 ## Posterior distribution of each group
 
-We have now updated our beliefs. These posteriors can now be thought of as our updated priors.
+We have now updated our beliefs. These posteriors can now be thought of as our new updated priors.
 
 ```{r}
-do.call(
-    plot_beta_pdf,
-    posteriors %>% select(
+priors_initial <- priors
+
+priors <- posteriors %>%
+    select(
         group = group,
         shape1 = posterior_shape1,
         shape2 = posterior_shape2
     )
-) +
+
+do.call(plot_beta_pdf, priors) +
     labs(
         title = "Posterior click-through rates of control and treatment groups"
     )
@@ -424,30 +427,24 @@ do.call(
 
 ## Another six days later...
 
-We've now collected more data, so let's update our priors to form new posteriors for the click-through rate of each group.
+We've now collected more data, so let's again update our priors to form new posteriors for the click-through rate of each group.
 
 ```{r}
-new_experiment_data <- experiment_simulator(
+experiment_data[['batch2']] <- experiment_simulator(
     avg_daily_users * 6, true_ctr
 )
-posteriors <- posteriors %>%
+posteriors <- posterior_update(priors, experiment_data[['batch2']])
+```
+
+```{r}
+priors <- posteriors %>%
     select(
         group = group,
         shape1 = posterior_shape1,
         shape2 = posterior_shape2
-    ) %>% 
-    posterior_update(new_experiment_data)
-```
-
-```{r}
-do.call(
-    plot_beta_pdf,
-    posteriors %>% select(
-        group = group,
-        shape1 = posterior_shape1,
-        shape2 = posterior_shape2
     )
-) +
+
+do.call(plot_beta_pdf, priors) +
     labs(
         title = "Posterior click-through rates of control and treatment groups"
     )
@@ -455,10 +452,8 @@ do.call(
 
 ## Another three weeks later...
 
-We've now collected even more data, so let's again update our priors to form new posteriors.
-
 ```{r}
-new_experiment_data <- experiment_simulator(
+experiment_data[['batch3']] <- experiment_simulator(
     avg_daily_users * 7 * 3, true_ctr
 )
 posteriors <- posteriors %>%
@@ -467,18 +462,20 @@ posteriors <- posteriors %>%
         shape1 = posterior_shape1,
         shape2 = posterior_shape2
     ) %>% 
-    posterior_update(new_experiment_data)
-```
-
-```{r}
-do.call(
-    plot_beta_pdf,
-    posteriors %>% select(
+    posterior_update(experiment_data[['batch3']])%>%
+    select(
         group = group,
         shape1 = posterior_shape1,
         shape2 = posterior_shape2
     )
-) +
+
+experiment_data_df <- experiment_data %>% map_dfr(~., .id = "batch")
+```
+
+We've now observed a total sample of `r with(experiment_data_df, sum(clicked, not_clicked))` users and a decision is made to end the experiment.
+
+```{r}
+do.call(plot_beta_pdf, posteriors) +
     labs(
         title = "Posterior click-through rates of control and treatment groups"
     )
@@ -492,7 +489,7 @@ Statistical inferences using the posterior distributions
 
 ::: columns
 ::: {.column width="65%"}
-We can draw a very very large number of random samples from our posterior distributions to make inferences about the experiment.
+We can draw a very large number of random samples from our posterior distributions to make inferences about the experiment.
 
 This is called Monte Carlo simulation -- named after a well known casino.
 
@@ -525,8 +522,8 @@ draw_posterior_samples <- function(posteriors, simulation_size) {
             ctr = list(
                 rbeta(
                     n = simulation_size,
-                    shape1 = posterior_shape1,
-                    shape2 = posterior_shape2
+                    shape1 = shape1,
+                    shape2 = shape2
                 )
             )
         ) %>% 
@@ -635,16 +632,16 @@ posterior_comparison %>%
     summary()
 ```
 
-What is the probability that the CTR of the treatment is greater than that of control?
+How do these compare to our theoretical CTRs of `r scales::percent(true_ctr["control"])` for control and `r scales::percent(true_ctr["treatment"])` for treatment, and uplift of `r scales::percent(true_ctr["treatment"] / true_ctr["control"] - 1, accuracy = 0.1)`?
 
 ```{r}
-#| echo: true
-#| output-location: column-fragment
-with(
+posterior_uplift <- with(
     posterior_comparison,
     mean(beats_control)
-) %>% scales::percent(0.01)
+)
 ```
+
+What is the posterior probability that the CTR of the treatment is greater than that of control? `r scales::percent(posterior_uplift, 0.01)`
 
 ::: notes
 Out of our `r scales::number(simulation_size)` simulations, we can see how often the treatment bet control. This tells us the probability that treatment is the winner.
