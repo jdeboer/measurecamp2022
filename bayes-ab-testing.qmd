@@ -205,28 +205,6 @@ plot_beta_pdf(
 
 The more confident we are about our beliefs, the narrower the curve.
 
-::: notes
-The mean of this curve is: $\mu = \frac{\alpha}{\alpha + \beta}$
-
-The standard deviation of this curve is: $\sigma = \sqrt{\frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)}}$
-
-Where $\alpha$ and $\beta$ represent the first and second shape parameters of the Beta distribution, respectively.
-
-Through substitution and rearrangement, you can determine $\alpha$ and $\beta$ from $\mu$ and $\sigma$.
-
-$$
-v = \frac{\mu (1 - p)}{\sigma ^ 2} - 1
-$$
-
-$$
-\alpha = \mu v
-$$
-
-$$
-\beta = (1 - \mu) v
-$$
-:::
-
 ## What about the treatment group? {.smaller}
 
 -   We expect that the click-through rates of the treatment and control groups will be correlated.
@@ -256,7 +234,7 @@ do.call(plot_beta_pdf, priors) +
 
 # Running a Bayesian A/B test
 
-## Prior agreement {.smaller}
+## Prior agreement
 
 Agreement must be reached on the priors before collecting and analysing data from the experiment.
 
@@ -265,7 +243,6 @@ Once we've agreed on the priors and have locked them in, we can start the experi
 Here's a summary of the priors we have chosen:
 
 ```{r}
-#| echo: true
 priors %>% 
     mutate(
         mean = (shape1 / (shape1 + shape2)) %>% 
@@ -427,7 +404,7 @@ do.call(plot_beta_pdf, priors) +
 
 ## Another six days later...
 
-We've now collected more data, so let's again update our priors to form new posteriors for the click-through rate of each group.
+We've collected more data, so let's again update our priors to form new posteriors for the click-through rates of each group.
 
 ```{r}
 experiment_data[['batch2']] <- experiment_simulator(
@@ -472,7 +449,7 @@ posteriors <- posteriors %>%
 experiment_data_df <- experiment_data %>% map_dfr(~., .id = "batch")
 ```
 
-We've now observed a total sample of `r with(experiment_data_df, sum(clicked, not_clicked))` users and a decision is made to end the experiment.
+We've now observed a total sample of `r scales::number(with(experiment_data_df, sum(clicked, not_clicked)), accuracy = 1, big.mark = ",")` users and a decision is made to end the experiment.
 
 ```{r}
 do.call(plot_beta_pdf, posteriors) +
@@ -600,7 +577,7 @@ posterior_samples %>%
 simulation_size <- 1000000
 ```
 
-We'll now draw `r scales::number(simulation_size)` samples...
+We'll now draw `r scales::number(simulation_size, accuracy = 1, big.mark = ",")` samples...
 
 ::: fragment
 ```{r}
@@ -617,7 +594,7 @@ Notice how these histograms follow the same distribution as our posteriors. That
 
 ## We can now make some inferences
 
-Here's a summary of our posterior samples for click-through rate as a result of the `r scales::number(simulation_size)` simulations:
+Here's a summary of our posterior samples for click-through rate as a result of the `r scales::number(simulation_size, accuracy = 1, big.mark = ",")` simulations:
 
 ```{r}
 posterior_comparison <- posterior_samples %>% 
@@ -772,3 +749,29 @@ Further topics that might interest you:
 ::: callout-tip
 These presentation slides and simulations have been produced in RStudio using Quarto. You can download the source code and slides from Github at: <https://github.com/jdeboer/measurecamp2022>
 :::
+
+# Extras
+
+## Some useful formulas {.smaller}
+
+The mean of each curve is: $\mu = \frac{\alpha}{\alpha + \beta}$
+
+The standard deviation of each curve is: $\sigma = \sqrt{\frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)}}$
+
+Where $\alpha$ and $\beta$ represent the first and second shape parameters of the Beta distribution, respectively.
+
+Through substitution and rearrangement, you can determine $\alpha$ and $\beta$ from $\mu$ and $\sigma$.
+
+$$
+v = \frac{\mu (1 - \mu)}{\sigma ^ 2} - 1
+$$
+
+$$
+\alpha = \mu v
+$$
+
+$$
+\beta = (1 - \mu) v
+$$
+
+This way, you can determine the shape parameters based on centrality and spread.
