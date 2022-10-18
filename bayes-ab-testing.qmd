@@ -61,13 +61,13 @@ Applying Bayesian inference effectively gives the experiment a guided head start
 
 ::: columns
 ::: {.column width="70%"}
-We have a button on a landing page that takes users to a sign up form.
+-   We have a button on a landing page that takes users to a sign up form.
 
-At present, the button is labelled "Register your interest".
+-   At present, the button is labelled "Register your interest".
 
-We want to test whether changing it to "Get started" will result in an increased click-through rate (CTR).
+-   We want to test whether changing it to "Get started" will result in an increased click-through rate (CTR).
 
-The idea of "Get started" was suggested by an experienced and skilled UX design professional.
+-   The idea of "Get started" was suggested by an experienced and skilled UX design professional.
 :::
 
 ::: {.column width="30%"}
@@ -236,9 +236,9 @@ do.call(plot_beta_pdf, priors) +
 
 ## Prior agreement
 
-Agreement must be reached on the priors before collecting and analysing data from the experiment.
+-   Agreement must be reached on the priors before collecting and analysing data from the experiment.
 
-Once we've agreed on the priors and have locked them in, we can start the experiment.
+-   Once we've agreed on the priors and have locked them in, we can start the experiment.
 
 Here's a summary of the priors we have chosen:
 
@@ -609,7 +609,7 @@ posterior_comparison %>%
     summary()
 ```
 
-How do these compare to our theoretical CTRs of `r scales::percent(true_ctr["control"])` for control and `r scales::percent(true_ctr["treatment"])` for treatment, and uplift of `r scales::percent(true_ctr["treatment"] / true_ctr["control"] - 1, accuracy = 0.1)`?
+-   How do these compare to our theoretical CTRs of `r scales::percent(true_ctr["control"])` for control and `r scales::percent(true_ctr["treatment"])` for treatment, and uplift of `r scales::percent(true_ctr["treatment"] / true_ctr["control"] - 1, accuracy = 0.1)`?
 
 ```{r}
 posterior_uplift <- with(
@@ -618,7 +618,7 @@ posterior_uplift <- with(
 )
 ```
 
-What is the posterior probability that the CTR of the treatment is greater than that of control? `r scales::percent(posterior_uplift, 0.01)`
+-   What is the posterior probability that the CTR of the treatment is greater than that of control? `r scales::percent(posterior_uplift, 0.01)`
 
 ::: notes
 Out of our `r scales::number(simulation_size)` simulations, we can see how often the treatment bet control. This tells us the probability that treatment is the winner.
