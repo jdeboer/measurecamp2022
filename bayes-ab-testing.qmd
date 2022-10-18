@@ -8,7 +8,7 @@ format:
         toc-depth: 1
         toc-title: "Agenda"
         footer: "Johann de Boer - Sydney Measurecamp 2022"
-        scrollable: true
+        scrollable: false
         theme: dark
         df-print: kable
         slide-number: true
