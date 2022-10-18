@@ -39,7 +39,7 @@ render_animations <- FALSE
 
 # Setting the scene
 
-## Randomised Control Trials (RCTs) {.smaller}
+## Randomised Control Trials (RCTs)
 
 A simplistic example:
 
@@ -49,25 +49,23 @@ A simplistic example:
 
 We want to know what effect our treatment has.
 
-::: fragment
-::: callout-tip
+::: notes
 Early on during an experiment, differences between these groups could simply be due to the random allocation of participants. As the groups get larger, these random differences will diminish, bringing us closer to the difference caused by the treatment.
 
 Applying Bayesian inference effectively gives the experiment a guided head start by including more data (probabilistic data, not real data) in the form of **priors**.
-:::
 :::
 
 ## Hypothetical scenario
 
 ::: columns
 ::: {.column width="70%"}
--   We have a button on a landing page that takes users to a sign up form.
+-   A button on a landing page that takes users to a sign up form.
 
 -   At present, the button is labelled "Register your interest".
 
--   We want to test whether changing it to "Get started" will result in an increased click-through rate (CTR).
+-   Test whether changing it to "Get started" will result in an increased click-through rate (CTR).
 
--   The idea of "Get started" was suggested by an experienced and skilled UX design professional.
+-   "Get started" was suggested by an experienced and skilled UX designer.
 :::
 
 ::: {.column width="30%"}
@@ -77,9 +75,9 @@ Applying Bayesian inference effectively gives the experiment a guided head start
 
 # Priors and probability distributions
 
-## Prior knowledge and beliefs {.smaller}
+## Prior knowledge and beliefs
 
-Before running an experiment, we form opinions about what we expect to see. We gather evidence such as:
+Before running an experiment, we form opinions and gather evidence such as:
 
 -   The baseline click-through rate of the button (with its current label) and knowledge of any outside variables that affects click-through rate, e.g. seasonality
 
@@ -87,16 +85,16 @@ Before running an experiment, we form opinions about what we expect to see. We g
 
 -   Qualitative research, such as usability tests, focus groups, and surveys that are related to the test
 
--   Opinions (including critical views) from interested parties, including experts
+-   Opinions (including critical) from stakeholders and experts
 
 ## Priors are probability distributions {.smaller}
 
 ::: columns
 ::: {.column width="40%"}
-We express our prior beliefs about the click-through rate of the control group using a **probability distribution**.
+Express prior beliefs about the click-through rate of the control group using a **probability distribution**.
 
 ::: {.fragment fragment-index="1"}
-This plot shows an example of an extremely uninformative prior -- a uniform prior that says any range of click-through rate is as probable as any other equally wide range, i.e. naive.
+Here's an example of an extremely uninformative prior -- a uniform prior that says any range of click-through rate is as probable as any other equally wide range, i.e. naive.
 :::
 :::
 
@@ -177,7 +175,7 @@ plot_beta_pdf(12, 28, group = factor("control", levels = experiment_groups)) +
 
 ::: columns
 ::: {.column width="75%"}
-The shape parameters (`shape1` and `shape2`) of the Beta distribution can be considered counts of **successes** and **failures**, respectively. Therefore, the mean probability of success (i.e. average click-through rate) can be calculated by this formula:
+The shape parameters (`shape1` and `shape2`) of the Beta distribution can be considered counts of **successes** and **failures**, respectively. The mean probability of success (i.e. average click-through rate) can be calculated by this formula:
 :::
 
 ::: {.column width="25%"}
@@ -205,17 +203,15 @@ plot_beta_pdf(
 
 The more confident we are about our beliefs, the narrower the curve.
 
-## What about the treatment group? {.smaller}
+## What about the treatment group?
 
 -   We expect that the click-through rates of the treatment and control groups will be correlated.
 
--   We don't know how correlated they will be, but we're not expecting a dramatic difference between them.
+-   We're unsure about how correlated they will be, but we're not expecting a dramatic difference.
 
--   We hope that the click-through rate of the treatment group will be an improvement, but we're open to other possibilities.
+-   We're more confident than not that the treatment will be an improvement, but we're open to other possibilities.
 
--   We're more confident than not that the click-through rate of the treatment group will be an improvement over control.
-
--   We don't want to bias the results of the experiment in favour of treatment or control, or towards a conclusion of there being a difference or no difference.
+-   We don't want to bias the experiment results in favour of treatment or control, or towards a conclusion of there being a difference or no difference.
 
 ## We've settled on these priors:
 
@@ -238,7 +234,7 @@ do.call(plot_beta_pdf, priors) +
 
 -   Agreement must be reached on the priors before collecting and analysing data from the experiment.
 
--   Once we've agreed on the priors and have locked them in, we can start the experiment.
+-   Once the priors are agreed to and locked in, we can start the experiment.
 
 Here's a summary of the priors we have chosen:
 
@@ -265,15 +261,19 @@ It's important to not change your original priors after seeing data collected fr
 true_ctr <- c(control = 32, treatment = 35) / 100
 ```
 
-Let's pretend that there's some true theoretical click-through rate for the control and treatment groups, `r scales::percent(true_ctr["control"])` and `r scales::percent(true_ctr["treatment"])` respectively. That equates to a relative uplift of `r scales::percent(true_ctr["treatment"] / true_ctr["control"] - 1, accuracy = 0.1)`. We'll generate some fake data to mimic a real experiment.
+We'll generate some fake data to mimic a real experiment.
 
-::: callout-note
-Normally we wouldn't know these theoretical CTRs in a real experiment -- we're doing this just to see how are results compare later.
-:::
+It'll be rigged though, as we'll already know the click-through rates for control and treatment.
 
-If we're successful at applying Bayesian inference then we should hope to see (but can't guarantee due to randomness) results that somewhat match with these theoretical CTRs.
+-   Control: `r scales::percent(true_ctr["control"])`
 
-## 1 day since the experiment started...
+-   Treatment: `r scales::percent(true_ctr["treatment"])`
+
+That's a relative uplift of `r scales::percent(true_ctr["treatment"] / true_ctr["control"] - 1, accuracy = 0.1)`.
+
+If we're successful at applying Bayesian inference then we should hope (but can't guarantee due to randomness) that the results somewhat match with these expected CTRs.
+
+## The next day
 
 ```{r}
 avg_daily_users <- 150
@@ -320,11 +320,11 @@ Our experiment simulator randomly selects users and assigns them to each group u
 
 ## Let's now incorporate our priors {.smaller}
 
-Posteriors represent your updated beliefs once you've incorporated experiment data with your priors. Like priors, posteriors represent your beliefs about the metric of interest, which in our case is click-through rate.
+**Posteriors** represent your updated beliefs once you've incorporated experiment data with your priors. Like priors, posteriors represent your beliefs about the metric of interest, which in our case is click-through rate.
 
 ::: columns
 ::: {.column width="50%"}
-For each experiment group, we derive our **posterior** shape parameters through simple arithmetic addition:
+For each experiment group, we derive our posterior shape parameters through simple arithmetic addition:
 
 ::: {.fragment fragment-index="1"}
 -   Increment the first shape parameter by the count users who had **clicked**
@@ -462,20 +462,20 @@ do.call(plot_beta_pdf, posteriors) +
 
 Statistical inferences using the posterior distributions
 
-## Monte Carlo simulation {.smaller}
+## Monte Carlo simulation
 
 ::: columns
-::: {.column width="65%"}
-We can draw a very large number of random samples from our posterior distributions to make inferences about the experiment.
+::: {.column width="60%"}
+Let's draw a very large number of random samples from our posterior distributions to make inferences about the experiment.
 
 This is called Monte Carlo simulation -- named after a well known casino.
 
-::: callout-note
+::: notes
 The more samples drawn, the greater the precision of the inferences you make, but this comes at the cost of computational time and memory. Nowadays, computer processing speed and memory are more than adequate for what we need. Analytical solutions, providing the greatest level of precision, are also sometimes possible.
 :::
 :::
 
-::: {.column width="35%"}
+::: {.column width="40%"}
 [![Credits: Sam Garza from Los Angeles, USA, CC BY 2.0, via Wikimedia Commons](Real_Monte_Carlo_Casino.jpg){fig-alt="Monte Carlo Casino, Monaco, France" fig-align="center"}](https://creativecommons.org/licenses/by/2.0)
 :::
 :::
@@ -565,7 +565,7 @@ plot_posterior_samples <- function(
 }
 
 posterior_samples %>% 
-    plot_posterior_samples(animate = render_animations, bins = 50)
+    plot_posterior_samples(animate = FALSE, bins = 50)
 ```
 :::
 :::
@@ -704,7 +704,7 @@ Ask yourself:
 
 # Summary and some final remarks
 
-## Before starting an experiment {.smaller}
+## Before starting an experiment
 
 Gather prior knowledge and articulate beliefs:
 
@@ -714,8 +714,8 @@ Gather prior knowledge and articulate beliefs:
 
 Express those beliefs and knowledge as distributions - these are your priors for your control and treatment groups.
 
-::: callout-important
-Ensure that the priors encapsulate the collective knowledge and beliefs of all interested parties so that there is agreement. This helps to avoid the results from being challenged later. This is because everyone would have already had an opportunity to provide their opinions.
+::: notes
+Ensure that the priors encapsulate the collective knowledge and beliefs of all interested parties so that there is agreement. This is to avoid the results from being challenged later.
 :::
 
 ## Running the experiment
