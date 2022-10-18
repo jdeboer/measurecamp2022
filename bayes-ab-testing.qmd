@@ -92,23 +92,16 @@ Before running an experiment, we form opinions about what we expect to see. We g
 ## Priors are probability distributions {.smaller}
 
 ::: columns
-
 ::: {.column width="40%"}
-
 We express our prior beliefs about the click-through rate of the control group using a **probability distribution**.
 
 ::: {.fragment fragment-index="1"}
-
 This plot shows an example of an extremely uninformative prior -- a uniform prior that says any range of click-through rate is as probable as any other equally wide range, i.e. naive.
-
 :::
-
 :::
 
 ::: {.column width="60%"}
-
 ::: {.fragment fragment-index="1"}
-
 ```{r}
 plot_beta_pdf <- function(shape1, shape2, group) {
     p <- seq(0, 100, by = 0.1) / 100 # 0 to 100 percent
@@ -151,9 +144,7 @@ plot_beta_pdf(1, 1, group = factor("control", levels = experiment_groups)) +
     )
 ```
 :::
-
 :::
-
 :::
 
 ::: callout-tip
@@ -770,7 +761,6 @@ Ensure that the priors encapsulate the collective knowledge and beliefs of all i
 -   Know when to end the experiment -- try to plan for this ahead of running the experiment
 
 ::: notes
-
 Null-hypothesis significance testing (NHST) is not what Bayesian is for:
 
 -   Bayesian tells you the probability of some effect being within some range, given the data. I.e. Given everything we know so far, what are the risks associated with the choices we have?
@@ -780,7 +770,6 @@ Null-hypothesis significance testing (NHST) is not what Bayesian is for:
 NHST is often referred to as the frequentist approach, where decisions are made using p-values and some arbitrary threshold $\alpha$ (i.e. false positive rate).
 
 Unlike NHST, Bayesian A/B testing doesn't give you a yes/no answer -- it instead informs you about the probabilities and risks associated with the choices you have.
-
 :::
 
 # Questions? {.smaller}
