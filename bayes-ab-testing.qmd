@@ -497,7 +497,7 @@ We can draw a very very large number of random samples from our posterior distri
 This is called Monte Carlo simulation -- named after a well known casino.
 
 ::: callout-note
-The more samples drawn, the greater the precision of the inferences you make, but this comes at the cost of computational time and memory. Nowadays, computer processing speed and memory are more than adequate for what we need.
+The more samples drawn, the greater the precision of the inferences you make, but this comes at the cost of computational time and memory. Nowadays, computer processing speed and memory are more than adequate for what we need. Analytical solutions, providing the greatest level of precision, are also sometimes possible.
 :::
 :::
 
