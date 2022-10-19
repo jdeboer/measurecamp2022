@@ -34,7 +34,7 @@ library(ggdark)
 library(gganimate)
 theme_set(dark_theme_gray())
 render_animations <- FALSE
-#render_animations <- TRUE
+render_animations <- TRUE
 ```
 
 # Setting the scene
@@ -263,7 +263,7 @@ true_ctr <- c(control = 32, treatment = 35) / 100
 
 We'll generate some fake data to mimic a real experiment.
 
-It'll be rigged though, as we'll already know the click-through rates for control and treatment.
+It'll be rigged though, as we'll already know the click-through rates for control and treatment, which are:
 
 -   Control: `r scales::percent(true_ctr["control"])`
 
@@ -439,12 +439,7 @@ posteriors <- posteriors %>%
         shape1 = posterior_shape1,
         shape2 = posterior_shape2
     ) %>% 
-    posterior_update(experiment_data[['batch3']])%>%
-    select(
-        group = group,
-        shape1 = posterior_shape1,
-        shape2 = posterior_shape2
-    )
+    posterior_update(experiment_data[['batch3']])
 
 experiment_data_df <- experiment_data %>% map_dfr(~., .id = "batch")
 ```
@@ -452,6 +447,13 @@ experiment_data_df <- experiment_data %>% map_dfr(~., .id = "batch")
 We've now observed a total sample of `r scales::number(with(experiment_data_df, sum(clicked, not_clicked)), accuracy = 1, big.mark = ",")` users and a decision is made to end the experiment.
 
 ```{r}
+posteriors <- posteriors %>%
+    select(
+        group = group,
+        shape1 = posterior_shape1,
+        shape2 = posterior_shape2
+    )
+
 do.call(plot_beta_pdf, posteriors) +
     labs(
         title = "Posterior click-through rates of control and treatment groups"
@@ -466,13 +468,13 @@ Statistical inferences using the posterior distributions
 
 ::: columns
 ::: {.column width="60%"}
-Let's draw a very large number of random samples from our posterior distributions to make inferences about the experiment.
+Let's draw a very large quantity of random samples from our posterior distributions to make inferences about the experiment.
 
-This is called Monte Carlo simulation -- named after a well known casino.
+This is called Monte Carlo simulation -- named after a casino.
 :::
 
 ::: {.column width="40%"}
-[![Credits: Sam Garza from Los Angeles, USA, CC BY 2.0, via Wikimedia Commons](Real_Monte_Carlo_Casino.jpg){fig-alt="Monte Carlo Casino, Monaco, France" fig-align="center"}](https://creativecommons.org/licenses/by/2.0)
+[![](Real_Monte_Carlo_Casino.jpg){fig-alt="Monte Carlo Casino, Monaco, France" fig-align="center"}](https://creativecommons.org/licenses/by/2.0)
 :::
 :::
 
@@ -486,7 +488,7 @@ simulation_size <- 100
 
 ## `r scales::number(simulation_size)` simulations {.smaller}
 
-Let's start slowly by drawing `r scales::number(simulation_size)` random samples from our distributions and plotting them using histograms...
+Let's start slowly by drawing `r scales::number(simulation_size)` random samples from our distributions and plot them using histograms...
 
 ::: columns
 ::: {.column width="55%"}
@@ -515,6 +517,8 @@ posterior_samples <- draw_posterior_samples(posteriors, simulation_size)
 Here's some of our Monte Carlo samples:
 
 ```{r}
+#| warning: false
+#| message: false
 posterior_samples %>% 
     spread(group, ctr) %>% 
     mutate(
@@ -594,7 +598,7 @@ Notice how these histograms follow the same distribution as our posteriors. That
 
 ## We can now make some inferences
 
-Here's a summary of our posterior samples for click-through rate as a result of the `r scales::number(simulation_size, accuracy = 1, big.mark = ",")` simulations:
+A summary of our `r scales::number(simulation_size, accuracy = 1, big.mark = ",")` posterior samples for click-through rate:
 
 ```{r}
 posterior_comparison <- posterior_samples %>% 
@@ -618,7 +622,7 @@ posterior_uplift <- with(
 )
 ```
 
--   What is the posterior probability that the CTR of the treatment is greater than that of control? `r scales::percent(posterior_uplift, 0.01)`
+-   What is the posterior probability that the CTR of the treatment is greater than that of control? Answer: `r scales::percent(posterior_uplift, 0.01)`
 
 ::: notes
 Out of our `r scales::number(simulation_size)` simulations, we can see how often the treatment bet control. This tells us the probability that treatment is the winner.
@@ -666,7 +670,7 @@ p
 
 # When to stop a Bayesian A/B test?
 
-## If using uninformative priors...
+## If using *uninformative* priors...
 
 If your original priors are uninformative or too weak, then you face the same risks as with frequentist experiments.
 
@@ -680,11 +684,11 @@ Before commencing the experiment, decide on:
 
 -   The accepted **false negative rate**
 
-## If using informative priors...
+## If using *informative* priors...
 
 If your priors are relatively informative and chosen carefully, then this can reduce the chances of false positives and negatives. But:
 
--   Be careful to not bias the results of the experiment.
+-   Be careful not to bias the results of the experiment.
 
 -   Power analysis is still recommended in order to gauge the worse case scenario for how long the experiment might run.
 
@@ -700,7 +704,7 @@ Ask yourself:
 
 -   Could it be worth running longer to learn more?
 
--   What are the risks of continuing or ending now? What if the results you see are just a fluke and are therefore misguiding you? What is the impact of making the wrong choice? What are the chances?
+-   What are the **risks** of continuing or ending now? What if the results you see are just a fluke and are therefore misguiding you? What is the impact of making the wrong choice? What are the chances?
 
 # Summary and some final remarks
 
@@ -752,13 +756,43 @@ These presentation slides and simulations have been produced in RStudio using Qu
 
 # Extras
 
+## Bayes theorem {.smaller}
+
+::: columns
+::: {.column width="60%"}
+$$
+P(B \cap A) = P(A \cap B) \\
+$$
+
+$$
+P(B) \times P(A|B) = P(A) \times P(B|A) \\
+$$
+
+$$
+P(A|B) = \frac{P(B|A) P(A)}{P(B)}
+$$
+
+$$
+f(\theta|data) = \frac{f(data|\theta) f(\theta)}{f(data)}
+$$
+
+$$
+Posterior \propto \mathcal{L}(\theta|data) \times prior
+$$
+:::
+
+::: {.column width="40%"}
+![Thomas Bayes - 1701 -- 1761](Thomas-Bayes.jpg)
+:::
+:::
+
 ## Some useful formulas {.smaller}
 
-The mean of each curve is: $\mu = \frac{\alpha}{\alpha + \beta}$
+Let $\alpha$ and $\beta$ represent the first and second shape parameters of the Beta distribution, respectively.
 
-The standard deviation of each curve is: $\sigma = \sqrt{\frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)}}$
+The mean of this distribution is: $\mu = \frac{\alpha}{\alpha + \beta}$
 
-Where $\alpha$ and $\beta$ represent the first and second shape parameters of the Beta distribution, respectively.
+The standard deviation is: $\sigma = \sqrt{\frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)}}$
 
 Through substitution and rearrangement, you can determine $\alpha$ and $\beta$ from $\mu$ and $\sigma$.
 

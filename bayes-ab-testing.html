@@ -24,70 +24,6 @@
     div.column{display: inline-block; vertical-align: top; width: 50%;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
-    pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-    pre > code.sourceCode > span:empty { height: 1.2em; }
-    .sourceCode { overflow: visible; }
-    code.sourceCode > span { color: inherit; text-decoration: inherit; }
-    div.sourceCode { margin: 1em 0; }
-    pre.sourceCode { margin: 0; }
-    @media screen {
-    div.sourceCode { overflow: auto; }
-    }
-    @media print {
-    pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-    }
-    pre.numberSource code
-      { counter-reset: source-line 0; }
-    pre.numberSource code > span
-      { position: relative; left: -4em; counter-increment: source-line; }
-    pre.numberSource code > span > a:first-child::before
-      { content: counter(source-line);
-        position: relative; left: -1em; text-align: right; vertical-align: baseline;
-        border: none; display: inline-block;
-        -webkit-touch-callout: none; -webkit-user-select: none;
-        -khtml-user-select: none; -moz-user-select: none;
-        -ms-user-select: none; user-select: none;
-        padding: 0 4px; width: 4em;
-      }
-    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-    div.sourceCode
-      { color: #f8f8f2;  }
-    @media screen {
-    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-    }
-    code span { color: #f8f8f2; } /* Normal */
-    code span.al { color: #f07178; background-color: #2a0f15; font-weight: bold; } /* Alert */
-    code span.an { color: #d4d0ab; } /* Annotation */
-    code span.at { color: #00e0e0; } /* Attribute */
-    code span.bn { color: #d4d0ab; } /* BaseN */
-    code span.bu { color: #abe338; } /* BuiltIn */
-    code span.cf { color: #ffa07a; font-weight: bold; } /* ControlFlow */
-    code span.ch { color: #abe338; } /* Char */
-    code span.cn { color: #ffd700; } /* Constant */
-    code span.co { color: #f8f8f2; font-style: italic; } /* Comment */
-    code span.cv { color: #ffd700; } /* CommentVar */
-    code span.do { color: #f8f8f2; } /* Documentation */
-    code span.dt { color: #ffa07a; } /* DataType */
-    code span.dv { color: #d4d0ab; } /* DecVal */
-    code span.er { color: #f07178; text-decoration: underline; } /* Error */
-    code span.ex { color: #00e0e0; font-weight: bold; } /* Extension */
-    code span.fl { color: #d4d0ab; } /* Float */
-    code span.fu { color: #ffa07a; } /* Function */
-    code span.im { color: #abe338; } /* Import */
-    code span.in { color: #d4d0ab; } /* Information */
-    code span.kw { color: #ffa07a; font-weight: bold; } /* Keyword */
-    code span.op { color: #ffa07a; } /* Operator */
-    code span.ot { color: #00e0e0; } /* Other */
-    code span.pp { color: #dcc6e0; } /* Preprocessor */
-    code span.re { color: #00e0e0; background-color: #f8f8f2; } /* RegionMarker */
-    code span.sc { color: #abe338; } /* SpecialChar */
-    code span.ss { color: #abe338; } /* SpecialString */
-    code span.st { color: #abe338; } /* String */
-    code span.va { color: #00e0e0; } /* Variable */
-    code span.vs { color: #abe338; } /* VerbatimString */
-    code span.wa { color: #dcc6e0; } /* Warning */
   </style>
   <link rel="stylesheet" href="bayes-ab-testing_files/libs/revealjs/dist/theme/quarto.css" id="theme">
   <link href="bayes-ab-testing_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -302,7 +238,6 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
-      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -400,6 +335,7 @@
 <li><a href="#/when-to-stop-a-bayesian-ab-test" id="/toc-when-to-stop-a-bayesian-ab-test">When to stop a Bayesian A/B test?</a></li>
 <li><a href="#/summary-and-some-final-remarks" id="/toc-summary-and-some-final-remarks">Summary and some final remarks</a></li>
 <li><a href="#/questions" id="/toc-questions">Questions?</a></li>
+<li><a href="#/extras" id="/toc-extras">Extras</a></li>
 </ul>
 </nav>
 </section>
@@ -409,7 +345,7 @@
 <h1>Setting the scene</h1>
 
 </section>
-<section id="randomised-control-trials-rcts" class="slide level2 smaller">
+<section id="randomised-control-trials-rcts" class="slide level2">
 <h2>Randomised Control Trials (RCTs)</h2>
 <p>A simplistic example:</p>
 <ul>
@@ -417,31 +353,31 @@
 <li><p>Let A be our <strong>control</strong> group and B be our <strong>treatment</strong> group.</p></li>
 </ul>
 <p>We want to know what effect our treatment has.</p>
-<div class="fragment">
-<div class="callout callout-tip callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Tip</strong></p>
-</div>
-<div class="callout-content">
+<aside class="notes">
 <p>Early on during an experiment, differences between these groups could simply be due to the random allocation of participants. As the groups get larger, these random differences will diminish, bringing us closer to the difference caused by the treatment.</p>
 <p>Applying Bayesian inference effectively gives the experiment a guided head start by including more data (probabilistic data, not real data) in the form of <strong>priors</strong>.</p>
-</div>
-</div>
-</div>
-</div>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="hypothetical-scenario" class="slide level2">
 <h2>Hypothetical scenario</h2>
 <div class="columns">
 <div class="column" style="width:70%;">
-<p>We have a button on a landing page that takes users to a sign up form.</p>
-<p>At present, the button is labelled “Register your interest”.</p>
-<p>We want to test whether changing it to “Get started” will result in an increased click-through rate (CTR).</p>
-<p>The idea of “Get started” was suggested by an experienced and skilled UX design professional.</p>
+<ul>
+<li><p>A button on a landing page that takes users to a sign up form.</p></li>
+<li><p>At present, the button is labelled “Register your interest”.</p></li>
+<li><p>Test whether changing it to “Get started” will result in an increased click-through rate (CTR).</p></li>
+<li><p>“Get started” was suggested by an experienced and skilled UX designer.</p></li>
+</ul>
 </div><div class="column" style="width:30%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -456,23 +392,23 @@
 <h1>Priors and probability distributions</h1>
 
 </section>
-<section id="prior-knowledge-and-beliefs" class="slide level2 smaller">
+<section id="prior-knowledge-and-beliefs" class="slide level2">
 <h2>Prior knowledge and beliefs</h2>
-<p>Before running an experiment, we form opinions about what we expect to see. We gather evidence such as:</p>
+<p>Before running an experiment, we form opinions and gather evidence such as:</p>
 <ul>
 <li><p>The baseline click-through rate of the button (with its current label) and knowledge of any outside variables that affects click-through rate, e.g.&nbsp;seasonality</p></li>
 <li><p>Effects we have seen from similar previous experiments</p></li>
 <li><p>Qualitative research, such as usability tests, focus groups, and surveys that are related to the test</p></li>
-<li><p>Opinions (including critical views) from interested parties, including experts</p></li>
+<li><p>Opinions (including critical) from stakeholders and experts</p></li>
 </ul>
 </section>
 <section id="priors-are-probability-distributions" class="slide level2 smaller">
 <h2>Priors are probability distributions</h2>
 <div class="columns">
 <div class="column" style="width:40%;">
-<p>We express our prior beliefs about the click-through rate of the control group using a <strong>probability distribution</strong>.</p>
+<p>Express prior beliefs about the click-through rate of the control group using a <strong>probability distribution</strong>.</p>
 <div class="fragment" data-fragment-index="1">
-<p>This plot shows an example of an extremely uninformative prior – a uniform prior that says any range of click-through rate is as probable as any other equally wide range, i.e.&nbsp;naive.</p>
+<p>Here’s an example of an extremely uninformative prior – a uniform prior that says any range of click-through rate is as probable as any other equally wide range, i.e.&nbsp;naive.</p>
 </div>
 </div><div class="column" style="width:60%;">
 <div class="fragment" data-fragment-index="1">
@@ -525,7 +461,7 @@
 </div>
 <div class="columns">
 <div class="column" style="width:75%;">
-<p>The shape parameters (<code>shape1</code> and <code>shape2</code>) of the Beta distribution can be considered counts of <strong>successes</strong> and <strong>failures</strong>, respectively. Therefore, the mean probability of success (i.e.&nbsp;average click-through rate) can be calculated by this formula:</p>
+<p>The shape parameters (<code>shape1</code> and <code>shape2</code>) of the Beta distribution can be considered counts of <strong>successes</strong> and <strong>failures</strong>, respectively. The mean probability of success (i.e.&nbsp;average click-through rate) can be calculated by this formula:</p>
 </div><div class="column" style="width:25%;">
 <p><span class="math display">\[
 \frac{shape1}{shape1 + shape2}
@@ -548,47 +484,16 @@
 </section>
 <section id="lets-say-weve-settled-on-this" class="slide level2 smaller">
 <h2>Let’s say we’ve settled on this:</h2>
-<div class="cell">
-<div class="cell-output-display">
-<p><img data-src="bayes-ab-testing_files/figure-revealjs/unnamed-chunk-5-1.png" width="960"></p>
-</div>
-</div>
-<p>The more confident we are about our beliefs, the narrower the curve.</p>
-<aside class="notes">
-<p>The mean of this curve is: <span class="math inline">\(\mu = \frac{\alpha}{\alpha + \beta}\)</span></p>
-<p>The standard deviation of this curve is: <span class="math inline">\(\sigma = \sqrt{\frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)}}\)</span></p>
-<p>Where <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> represent the first and second shape parameters of the Beta distribution, respectively.</p>
-<p>Through substitution and rearrangement, you can determine <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> from <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span>.</p>
-<p><span class="math display">\[
-v = \frac{\mu (1 - p)}{\sigma ^ 2} - 1
-\]</span></p>
-<p><span class="math display">\[
-\alpha = \mu v
-\]</span></p>
-<p><span class="math display">\[
-\beta = (1 - \mu) v
-\]</span></p>
-<p>Calculate v, a temporary variable, using this formula: v = (𝜇 ✕ [1 - 𝜇] ÷ 𝜎2) - 1 From there, we can now derive the 𝛼 and 𝛽 parameters: 𝛼 = 𝜇 ✕ v 𝛽 = (1 - 𝜇) ✕ v</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+
+<img data-src="bayes-ab-testing_files/figure-revealjs/unnamed-chunk-5-1.png" width="960" class="r-stretch"><p>The more confident we are about our beliefs, the narrower the curve.</p>
 </section>
-<section id="what-about-the-treatment-group" class="slide level2 smaller">
+<section id="what-about-the-treatment-group" class="slide level2">
 <h2>What about the treatment group?</h2>
 <ul>
 <li><p>We expect that the click-through rates of the treatment and control groups will be correlated.</p></li>
-<li><p>We don’t know how correlated they will be, but we’re not expecting a dramatic difference between them.</p></li>
-<li><p>We hope that the click-through rate of the treatment group will be an improvement, but we’re open to other possibilities.</p></li>
-<li><p>We’re more confident than not that the click-through rate of the treatment group will be an improvement over control.</p></li>
-<li><p>We don’t want to bias the results of the experiment in favour of treatment or control, or towards a conclusion of there being a difference or no difference.</p></li>
+<li><p>We’re unsure about how correlated they will be, but we’re not expecting a dramatic difference.</p></li>
+<li><p>We’re more confident than not that the treatment will be an improvement, but we’re open to other possibilities.</p></li>
+<li><p>We don’t want to bias the experiment results in favour of treatment or control, or towards a conclusion of there being a difference or no difference.</p></li>
 </ul>
 </section>
 <section id="weve-settled-on-these-priors" class="slide level2">
@@ -600,22 +505,14 @@ v = \frac{\mu (1 - p)}{\sigma ^ 2} - 1
 <h1>Running a Bayesian A/B test</h1>
 
 </section>
-<section id="prior-agreement" class="slide level2 smaller">
+<section id="prior-agreement" class="slide level2">
 <h2>Prior agreement</h2>
-<p>Agreement must be reached on the priors before collecting and analysing data from the experiment.</p>
-<p>Once we’ve agreed on the priors and have locked them in, we can start the experiment.</p>
+<ul>
+<li><p>Agreement must be reached on the priors before collecting and analysing data from the experiment.</p></li>
+<li><p>Once the priors are agreed to and locked in, we can start the experiment.</p></li>
+</ul>
 <p>Here’s a summary of the priors we have chosen:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>priors <span class="sc">%&gt;%</span> </span>
-<span id="cb1-2"><a href="#cb1-2"></a>    <span class="fu">mutate</span>(</span>
-<span id="cb1-3"><a href="#cb1-3"></a>        <span class="at">mean =</span> (shape1 <span class="sc">/</span> (shape1 <span class="sc">+</span> shape2)) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-4"><a href="#cb1-4"></a>            scales<span class="sc">::</span><span class="fu">percent</span>(),</span>
-<span id="cb1-5"><a href="#cb1-5"></a>        <span class="at">sd =</span> <span class="fu">sqrt</span>(</span>
-<span id="cb1-6"><a href="#cb1-6"></a>            shape1 <span class="sc">*</span> shape2 <span class="sc">/</span></span>
-<span id="cb1-7"><a href="#cb1-7"></a>                ((shape1 <span class="sc">+</span> shape2) <span class="sc">^</span> <span class="dv">2</span> <span class="sc">*</span> (shape1 <span class="sc">+</span> shape2 <span class="sc">+</span> <span class="dv">1</span>))</span>
-<span id="cb1-8"><a href="#cb1-8"></a>        ) <span class="sc">%&gt;%</span></span>
-<span id="cb1-9"><a href="#cb1-9"></a>            scales<span class="sc">::</span><span class="fu">percent</span>(<span class="at">suffix =</span> <span class="st">" p.p."</span>)</span>
-<span id="cb1-10"><a href="#cb1-10"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="kable-table">
 <table>
@@ -662,29 +559,22 @@ v = \frac{\mu (1 - p)}{\sigma ^ 2} - 1
           display:block!important;
       }</style></aside>
 </section>
-<section id="lets-run-a-simulated-experiment" class="slide level2">
-<h2>Let’s run a simulated experiment</h2>
+<section id="lets-run-an-experiment" class="slide level2">
+<h2>Let’s run an experiment</h2>
 <div class="cell">
 
 </div>
-<p>Let’s pretend that there’s some true theoretical click-through rate for the control and treatment groups, 32% and 35% respectively. That equates to a relative uplift of 9.4%.</p>
-<div class="callout callout-note callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Note</strong></p>
-</div>
-<div class="callout-content">
-<p>Remember that this is just a hypothetical simulation. We wouldn’t know these in a real experiment ¯\_(ツ)_/¯.</p>
-</div>
-</div>
-</div>
-<p>If we’re successful at applying Bayesian inference then we should hope to see (but can’t guarantee due to randomness) results that somewhat match with these theoretical CTRs.</p>
+<p>We’ll generate some fake data to mimic a real experiment.</p>
+<p>It’ll be rigged though, as we’ll already know the click-through rates for control and treatment, which are:</p>
+<ul>
+<li><p>Control: 32%</p></li>
+<li><p>Treatment: 35%</p></li>
+</ul>
+<p>That’s a relative uplift of 9.4%.</p>
+<p>If we’re successful at applying Bayesian inference then we should hope (but can’t guarantee due to randomness) that the results somewhat match with these expected CTRs.</p>
 </section>
-<section id="day-since-the-experiment-started" class="slide level2">
-<h2>1 day since the experiment started…</h2>
+<section id="the-next-day" class="slide level2">
+<h2>The next day</h2>
 <div class="cell">
 
 </div>
@@ -705,17 +595,17 @@ v = \frac{\mu (1 - p)}{\sigma ^ 2} - 1
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">control</td>
-<td style="text-align: right;">75</td>
-<td style="text-align: right;">25</td>
-<td style="text-align: right;">50</td>
-<td style="text-align: left;">33.3%</td>
+<td style="text-align: right;">72</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: left;">27.8%</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">treatment</td>
-<td style="text-align: right;">71</td>
-<td style="text-align: right;">20</td>
-<td style="text-align: right;">51</td>
-<td style="text-align: left;">28.2%</td>
+<td style="text-align: right;">81</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">55</td>
+<td style="text-align: left;">32.1%</td>
 </tr>
 </tbody>
 </table>
@@ -738,10 +628,10 @@ v = \frac{\mu (1 - p)}{\sigma ^ 2} - 1
 </section>
 <section id="lets-now-incorporate-our-priors" class="slide level2 smaller">
 <h2>Let’s now incorporate our priors</h2>
-<p>Posteriors represent your updated beliefs once you’ve incorporated experiment data with your priors. Like priors, posteriors represent your beliefs about the metric of interest, which in our case is click-through rate.</p>
+<p><strong>Posteriors</strong> represent your updated beliefs once you’ve incorporated experiment data with your priors. Like priors, posteriors represent your beliefs about the metric of interest, which in our case is click-through rate.</p>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p>For each experiment group, we derive our <strong>posterior</strong> shape parameters through simple arithmetic addition:</p>
+<p>For each experiment group, we derive our posterior shape parameters through simple arithmetic addition:</p>
 <div class="fragment" data-fragment-index="1">
 <ul>
 <li>Increment the first shape parameter by the count users who had <strong>clicked</strong></li>
@@ -776,13 +666,13 @@ v = \frac{\mu (1 - p)}{\sigma ^ 2} - 1
 </tr>
 <tr class="even">
 <td style="text-align: left;">clicked</td>
-<td style="text-align: right;">25</td>
 <td style="text-align: right;">20</td>
+<td style="text-align: right;">26</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">posterior_shape1</td>
-<td style="text-align: right;">145</td>
-<td style="text-align: right;">47</td>
+<td style="text-align: right;">140</td>
+<td style="text-align: right;">53</td>
 </tr>
 </tbody>
 </table>
@@ -810,13 +700,13 @@ v = \frac{\mu (1 - p)}{\sigma ^ 2} - 1
 </tr>
 <tr class="even">
 <td style="text-align: left;">not_clicked</td>
-<td style="text-align: right;">50</td>
-<td style="text-align: right;">51</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">55</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">posterior_shape2</td>
-<td style="text-align: right;">338</td>
-<td style="text-align: right;">111</td>
+<td style="text-align: right;">340</td>
+<td style="text-align: right;">115</td>
 </tr>
 </tbody>
 </table>
@@ -842,12 +732,12 @@ v = \frac{\mu (1 - p)}{\sigma ^ 2} - 1
 </section>
 <section id="posterior-distribution-of-each-group" class="slide level2">
 <h2>Posterior distribution of each group</h2>
-<p>We have now updated our beliefs. These posteriors can now be thought of as our updated priors.</p>
+<p>We have now updated our beliefs. These posteriors can now be thought of as our new updated priors.</p>
 
 <img data-src="bayes-ab-testing_files/figure-revealjs/unnamed-chunk-14-1.png" width="960" class="r-stretch"></section>
 <section id="another-six-days-later" class="slide level2">
 <h2>Another six days later…</h2>
-<p>We’ve now collected more data, so let’s update our priors to form new posteriors for the click-through rate of each group.</p>
+<p>We’ve collected more data, so let’s again update our priors to form new posteriors for the click-through rates of each group.</p>
 <div class="cell">
 
 </div>
@@ -855,10 +745,10 @@ v = \frac{\mu (1 - p)}{\sigma ^ 2} - 1
 <img data-src="bayes-ab-testing_files/figure-revealjs/unnamed-chunk-16-1.png" width="960" class="r-stretch"></section>
 <section id="another-three-weeks-later" class="slide level2">
 <h2>Another three weeks later…</h2>
-<p>We’ve now collected even more data, so let’s again update our priors to form new posteriors.</p>
 <div class="cell">
 
 </div>
+<p>We’ve now observed a total sample of 4,176 users and a decision is made to end the experiment.</p>
 
 <img data-src="bayes-ab-testing_files/figure-revealjs/unnamed-chunk-18-1.png" width="960" class="r-stretch"></section></section>
 <section>
@@ -866,41 +756,40 @@ v = \frac{\mu (1 - p)}{\sigma ^ 2} - 1
 <h1>Posterior analysis</h1>
 <p>Statistical inferences using the posterior distributions</p>
 </section>
-<section id="monte-carlo-simulation" class="slide level2 smaller">
+<section id="monte-carlo-simulation" class="slide level2">
 <h2>Monte Carlo simulation</h2>
 <div class="columns">
-<div class="column" style="width:65%;">
-<p>We can draw a very very large number of random samples from our posterior distributions to make inferences about the experiment.</p>
-<p>This is called Monte Carlo simulation – named after a well known casino.</p>
-<div class="callout callout-note callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Note</strong></p>
-</div>
-<div class="callout-content">
-<p>The more samples drawn, the greater the precision of the inferences you make, but this comes at the cost of computational time and memory. Nowadays, computer processing speed and memory are more than adequate for what we need.</p>
-</div>
-</div>
-</div>
-</div><div class="column" style="width:35%;">
+<div class="column" style="width:60%;">
+<p>Let’s draw a very large quantity of random samples from our posterior distributions to make inferences about the experiment.</p>
+<p>This is called Monte Carlo simulation – named after a casino.</p>
+</div><div class="column" style="width:40%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><a href="https://creativecommons.org/licenses/by/2.0"><img data-src="Real_Monte_Carlo_Casino.jpg" alt="Monte Carlo Casino, Monaco, France"></a></p>
-<p></p><figcaption>Credits: Sam Garza from Los Angeles, USA, CC BY 2.0, via Wikimedia Commons</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
+<aside class="notes">
+<p>The more samples drawn, the greater the precision of the inferences you make, but this comes at the cost of computational time and memory. Nowadays, computer processing speed and memory are more than adequate for what we need. Analytical solutions, providing the greatest level of precision, are also sometimes possible.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 <div class="cell">
 
 </div>
 </section>
 <section id="simulations" class="slide level2 smaller">
 <h2>100 simulations</h2>
-<p>Let’s start slowly by drawing 100 random samples from our distributions and plotting them using histograms…</p>
+<p>Let’s start slowly by drawing 100 random samples from our distributions and plot them using histograms…</p>
 <div class="columns">
 <div class="column" style="width:55%;">
 <div class="cell">
@@ -921,45 +810,45 @@ v = \frac{\mu (1 - p)}{\sigma ^ 2} - 1
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">0.320</td>
-<td style="text-align: right;">0.370</td>
-<td style="text-align: right;">0.155</td>
+<td style="text-align: right;">0.326</td>
+<td style="text-align: right;">0.334</td>
+<td style="text-align: right;">0.024</td>
 <td style="text-align: left;">TRUE</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">0.325</td>
-<td style="text-align: right;">0.366</td>
-<td style="text-align: right;">0.127</td>
-<td style="text-align: left;">TRUE</td>
-</tr>
-<tr class="odd">
 <td style="text-align: right;">0.324</td>
-<td style="text-align: right;">0.347</td>
-<td style="text-align: right;">0.071</td>
-<td style="text-align: left;">TRUE</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">0.321</td>
-<td style="text-align: right;">0.378</td>
-<td style="text-align: right;">0.179</td>
+<td style="text-align: right;">0.327</td>
+<td style="text-align: right;">0.009</td>
 <td style="text-align: left;">TRUE</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">0.335</td>
-<td style="text-align: right;">0.364</td>
-<td style="text-align: right;">0.086</td>
+<td style="text-align: right;">0.311</td>
+<td style="text-align: right;">0.336</td>
+<td style="text-align: right;">0.079</td>
 <td style="text-align: left;">TRUE</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">0.309</td>
-<td style="text-align: right;">0.361</td>
-<td style="text-align: right;">0.169</td>
+<td style="text-align: right;">0.295</td>
+<td style="text-align: right;">0.327</td>
+<td style="text-align: right;">0.111</td>
 <td style="text-align: left;">TRUE</td>
 </tr>
 <tr class="odd">
+<td style="text-align: right;">0.308</td>
 <td style="text-align: right;">0.346</td>
-<td style="text-align: right;">0.358</td>
-<td style="text-align: right;">0.036</td>
+<td style="text-align: right;">0.121</td>
+<td style="text-align: left;">TRUE</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.306</td>
+<td style="text-align: right;">0.347</td>
+<td style="text-align: right;">0.134</td>
+<td style="text-align: left;">TRUE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.316</td>
+<td style="text-align: right;">0.347</td>
+<td style="text-align: right;">0.097</td>
 <td style="text-align: left;">TRUE</td>
 </tr>
 </tbody>
@@ -983,11 +872,11 @@ v = \frac{\mu (1 - p)}{\sigma ^ 2} - 1
 <div class="cell">
 
 </div>
-<p>We’ll now draw 1 000 000 samples…</p>
+<p>We’ll now draw 1,000,000 samples…</p>
 <div class="fragment">
 <div class="cell">
 <div class="cell-output-display">
-<p><img data-src="bayes-ab-testing_files/figure-revealjs/unnamed-chunk-24-1.png" width="960"></p>
+<p><img data-src="bayes-ab-testing_files/figure-revealjs/unnamed-chunk-24-1.gif"></p>
 </div>
 </div>
 </div>
@@ -1007,31 +896,27 @@ v = \frac{\mu (1 - p)}{\sigma ^ 2} - 1
 </section>
 <section id="we-can-now-make-some-inferences" class="slide level2">
 <h2>We can now make some inferences</h2>
-<p>Here’s a summary of our posterior samples for click-through rate as a result of the 1 000 000 simulations:</p>
+<p>A summary of our 1,000,000 posterior samples for click-through rate:</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>    control         treatment          uplift         beats_control  
- Min.   :0.2793   Min.   :0.3155   Min.   :-0.06901   Mode :logical  
- 1st Qu.:0.3149   1st Qu.:0.3558   1st Qu.: 0.09895   FALSE:1305     
- Median :0.3212   Median :0.3628   Median : 0.12940   TRUE :998695   
- Mean   :0.3212   Mean   :0.3628   Mean   : 0.13044                  
- 3rd Qu.:0.3275   3rd Qu.:0.3697   3rd Qu.: 0.16097                  
- Max.   :0.3691   Max.   :0.4156   Max.   : 0.38006                  </code></pre>
+ Min.   :0.2720   Min.   :0.2833   Min.   :-0.14088   Mode :logical  
+ 1st Qu.:0.3088   1st Qu.:0.3289   1st Qu.: 0.03578   FALSE:65745    
+ Median :0.3150   Median :0.3357   Median : 0.06567   TRUE :934255   
+ Mean   :0.3151   Mean   :0.3358   Mean   : 0.06661                  
+ 3rd Qu.:0.3213   3rd Qu.:0.3426   3rd Qu.: 0.09641                  
+ Max.   :0.3582   Max.   :0.3879   Max.   : 0.29837                  </code></pre>
 </div>
 </div>
-<p>What is the probability that the CTR of the treatment is greater than that of control?</p>
-<div class="cell columns column-output-location">
-<div class="column">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">with</span>(</span>
-<span id="cb3-2"><a href="#cb3-2"></a>    posterior_comparison,</span>
-<span id="cb3-3"><a href="#cb3-3"></a>    <span class="fu">mean</span>(beats_control)</span>
-<span id="cb3-4"><a href="#cb3-4"></a>) <span class="sc">%&gt;%</span> scales<span class="sc">::</span><span class="fu">percent</span>(<span class="fl">0.01</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div><div class="column fragment">
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "99.87%"</code></pre>
+<ul>
+<li>How do these compare to our theoretical CTRs of 32% for control and 35% for treatment, and uplift of 9.4%?</li>
+</ul>
+<div class="cell">
+
 </div>
-</div>
-</div>
+<ul>
+<li>What is the posterior probability that the CTR of the treatment is greater than that of control? Answer: 93.43%</li>
+</ul>
 <aside class="notes">
 <p>Out of our 1 000 000 simulations, we can see how often the treatment bet control. This tells us the probability that treatment is the winner.</p>
 <p>If we filtered our simulations to those where control won and calculated the median CTR uplift, and did the same for cases where treatment won, we can determine the expected losses of choosing either variant as the winner. We should prefer the variant with the lowest expected loss or continue to run the experiment longer to improve our confidence.</p>
@@ -1050,14 +935,14 @@ v = \frac{\mu (1 - p)}{\sigma ^ 2} - 1
 <section id="posterior-distribution-of-the-ctr-uplift" class="slide level2">
 <h2>Posterior distribution of the CTR uplift</h2>
 
-<img data-src="bayes-ab-testing_files/figure-revealjs/unnamed-chunk-27-1.png" width="960" class="r-stretch"></section></section>
+<img data-src="bayes-ab-testing_files/figure-revealjs/unnamed-chunk-27-1.gif" class="r-stretch"></section></section>
 <section>
 <section id="when-to-stop-a-bayesian-ab-test" class="title-slide slide level1 center">
 <h1>When to stop a Bayesian A/B test?</h1>
 
 </section>
 <section id="if-using-uninformative-priors" class="slide level2">
-<h2>If using uninformative priors…</h2>
+<h2>If using <em>uninformative</em> priors…</h2>
 <p>If your original priors are uninformative or too weak, then you face the same risks as with frequentist experiments.</p>
 <p>Perform <strong>power analysis</strong> ahead of running the experiment. This is to determine the required sample size before any inferences are made.</p>
 <p>Before commencing the experiment, decide on:</p>
@@ -1068,10 +953,10 @@ v = \frac{\mu (1 - p)}{\sigma ^ 2} - 1
 </ul>
 </section>
 <section id="if-using-informative-priors" class="slide level2">
-<h2>If using informative priors…</h2>
+<h2>If using <em>informative</em> priors…</h2>
 <p>If your priors are relatively informative and chosen carefully, then this can reduce the chances of false positives and negatives. But:</p>
 <ul>
-<li><p>Be careful to not bias the results of the experiment.</p></li>
+<li><p>Be careful not to bias the results of the experiment.</p></li>
 <li><p>Power analysis is still recommended in order to gauge the worse case scenario for how long the experiment might run.</p></li>
 </ul>
 <p>Bayesian inference, with informative priors, can make it possible to end an experiment early.</p>
@@ -1083,7 +968,7 @@ v = \frac{\mu (1 - p)}{\sigma ^ 2} - 1
 <li><p>Has the experiment run for at least a couple of cycles? (e.g.&nbsp;at least two full weeks)</p></li>
 <li><p>Have the results stabilised? Is there a clear winner?</p></li>
 <li><p>Could it be worth running longer to learn more?</p></li>
-<li><p>What are the risks of continuing or ending now? What if the results you see are just a fluke and are therefore misguiding you? What is the impact of making the wrong choice? What are the chances?</p></li>
+<li><p>What are the <strong>risks</strong> of continuing or ending now? What if the results you see are just a fluke and are therefore misguiding you? What is the impact of making the wrong choice? What are the chances?</p></li>
 </ul>
 </section></section>
 <section>
@@ -1091,7 +976,7 @@ v = \frac{\mu (1 - p)}{\sigma ^ 2} - 1
 <h1>Summary and some final remarks</h1>
 
 </section>
-<section id="before-starting-an-experiment" class="slide level2 smaller">
+<section id="before-starting-an-experiment" class="slide level2">
 <h2>Before starting an experiment</h2>
 <p>Gather prior knowledge and articulate beliefs:</p>
 <ul>
@@ -1099,19 +984,19 @@ v = \frac{\mu (1 - p)}{\sigma ^ 2} - 1
 <li><p>What do you expect the effect of the treatment to be? How sure are you?</p></li>
 </ul>
 <p>Express those beliefs and knowledge as distributions - these are your priors for your control and treatment groups.</p>
-<div class="callout callout-important callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Important</strong></p>
-</div>
-<div class="callout-content">
-<p>Ensure that the priors encapsulate the collective knowledge and beliefs of all interested parties so that there is agreement. This helps to avoid the results from being challenged later. This is because everyone would have already had an opportunity to provide their opinions.</p>
-</div>
-</div>
-</div>
+<aside class="notes">
+<p>Ensure that the priors encapsulate the collective knowledge and beliefs of all interested parties so that there is agreement. This is to avoid the results from being challenged later.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="running-the-experiment" class="slide level2">
 <h2>Running the experiment</h2>
@@ -1160,11 +1045,63 @@ v = \frac{\mu (1 - p)}{\sigma ^ 2} - 1
 </div>
 </div>
 </div>
+</section>
+
+<section>
+<section id="extras" class="title-slide slide level1 center">
+<h1>Extras</h1>
+
+</section>
+<section id="bayes-theorem" class="slide level2 smaller">
+<h2>Bayes theorem</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<p><span class="math display">\[
+P(B \cap A) = P(A \cap B) \\
+\]</span></p>
+<p><span class="math display">\[
+P(B) \times P(A|B) = P(A) \times P(B|A) \\
+\]</span></p>
+<p><span class="math display">\[
+P(A|B) = \frac{P(B|A) P(A)}{P(B)}
+\]</span></p>
+<p><span class="math display">\[
+f(\theta|data) = \frac{f(data|\theta) f(\theta)}{f(data)}
+\]</span></p>
+<p><span class="math display">\[
+Posterior \propto \mathcal{L}(\theta|data) \times prior
+\]</span></p>
+</div><div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="Thomas-Bayes.jpg"></p>
+<p></p><figcaption>Thomas Bayes - 1701 – 1761</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="some-useful-formulas" class="slide level2 smaller">
+<h2>Some useful formulas</h2>
+<p>Let <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> represent the first and second shape parameters of the Beta distribution, respectively.</p>
+<p>The mean of this distribution is: <span class="math inline">\(\mu = \frac{\alpha}{\alpha + \beta}\)</span></p>
+<p>The standard deviation is: <span class="math inline">\(\sigma = \sqrt{\frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)}}\)</span></p>
+<p>Through substitution and rearrangement, you can determine <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> from <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span>.</p>
+<p><span class="math display">\[
+v = \frac{\mu (1 - \mu)}{\sigma ^ 2} - 1
+\]</span></p>
+<p><span class="math display">\[
+\alpha = \mu v
+\]</span></p>
+<p><span class="math display">\[
+\beta = (1 - \mu) v
+\]</span></p>
+<p>This way, you can determine the shape parameters based on centrality and spread.</p>
 
 <img src="Logo_MeasureCamp_SYD_2015-3.png" class="slide-logo r-stretch"><div class="footer footer-default">
 <p>Johann de Boer - Sydney Measurecamp 2022</p>
 </div>
-</section>
+</section></section>
     </div>
   </div>
 
