@@ -656,7 +656,7 @@ p <- ggplot(
         fill = "Does the treatment\nbeat control?"
     )
 
-if (render_animations) {
+if (render_animations & FALSE) {
     p <- p +
         transition_manual(frame, cumulative = TRUE) +
         view_follow()
