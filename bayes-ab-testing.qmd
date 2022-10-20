@@ -648,6 +648,7 @@ p <- ggplot(
     ) +
     geom_histogram(bins = 1000) +
     scale_x_continuous(labels = scales::percent) +
+    scale_fill_discrete(drop = FALSE) +
     labs(
         title = "Uplift to click-through rate",
         subtitle = "Treatment relative to control",
