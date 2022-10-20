@@ -827,7 +827,7 @@ This way, you can determine the shape parameters based on centrality and spread.
 
     -   If X is greater than or equal to Y then the host will mark it as a 'success', otherwise as a 'failure', using a tally board that's visible to all contestants.
 
-3.  The objective of the game is for contestants to estimate Y by requesting the host to perform step 2 as many times as they need. The closer their estimate is, the better. However, each contestant can only call out their estimate once.
+3.  The objective of the game is for contestants to estimate Y by requesting the host to perform step 2 as many times as they need. The closer their guess is, the better. However, each contestant can only call out their guess once.
 
 4.  Once two contestants have called out what they believe Y is, then the game ends and the host reveals the true answer for Y.
 
@@ -837,4 +837,4 @@ This way, you can determine the shape parameters based on centrality and spread.
 
 -   As the number of successes and failures increases, you get closer to knowing what Y is.
 
--   The compromise made between speed and certainty will ultimately determine your fate.
+-   The compromise each contestant makes between speed and certainty will influence who wins.
