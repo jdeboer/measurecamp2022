@@ -75,6 +75,8 @@ Applying Bayesian inference effectively gives the experiment a guided head start
 
 # Priors and probability distributions
 
+The key to speeding up your experiment
+
 ## Prior knowledge and beliefs
 
 Before running an experiment, we form opinions and gather evidence such as:
@@ -540,7 +542,7 @@ plot_posterior_samples <- function(
 ) {
     posterior_samples <- posterior_samples %>% 
         mutate(
-            frame = cut(log(sim_id), breaks = 10, labels = FALSE)
+            frame = cut(log(sim_id), breaks = 50, labels = FALSE)
         )
     p <- ggplot(posterior_samples) +
         facet_wrap(~group, ncol = 1) +
@@ -561,7 +563,7 @@ plot_posterior_samples <- function(
             transition_manual(frame, cumulative = TRUE) +
             view_follow()
         p <- p %>% 
-            animate(duration = 5, renderer = gifski_renderer(loop = FALSE))
+            animate(duration = 10, renderer = gifski_renderer(loop = FALSE))
     }
     
     p
@@ -693,7 +695,7 @@ If your priors are relatively informative and chosen carefully, then this can re
 
 -   Power analysis is still recommended in order to gauge the worse case scenario for how long the experiment might run.
 
-Bayesian inference, with informative priors, can make it possible to end an experiment early.
+Bayesian inference, with informative priors, can make it **possible to end an experiment early**.
 
 ## If deciding to end early...
 
@@ -823,9 +825,9 @@ This way, you can determine the shape parameters based on centrality and spread.
 
 1.  The host secretly picks a number, Y, between 0% and 100% and writes it down.
 
-2.  The host will then generate a random number, X, again between 0% and 100%:
+2.  The host will then secretly generate a random number, X, again between 0% and 100%:
 
-    -   If X is greater than or equal to Y then the host will mark it as a 'success', otherwise as a 'failure', using a tally board that's visible to all contestants.
+    -   If X is less than Y then the host will mark it as a 'success', otherwise as a 'failure', using a tally board that's visible to all contestants.
 
 3.  The objective of the game is for contestants to estimate Y by asking the host to perform step 2 as many times as they need (to a reasonable limit). The closer their guess is, the better. However, each contestant can only call out their guess once.
 
@@ -838,3 +840,7 @@ This way, you can determine the shape parameters based on centrality and spread.
 -   As the number of successes and failures increases, you get closer to knowing what Y is.
 
 -   The compromise each contestant makes between speed and certainty will influence who wins.
+
+::: callout-tip
+Try a modification to the game where Y is a number related to a topic that the audience will have some prior knowledge about. This way they can incorporate their prior expectations when making a guess.
+:::
