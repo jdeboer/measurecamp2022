@@ -671,44 +671,6 @@ if (render_animations & FALSE) {
 p
 ```
 
-# When to stop a Bayesian A/B test?
-
-## If using *uninformative* priors...
-
-If your original priors are uninformative or too weak, then you face the same risks as with frequentist experiments.
-
-Perform **power analysis** ahead of running the experiment. This is to determine the required sample size before any inferences are made.
-
-Before commencing the experiment, decide on:
-
--   The **minimum detectable effect** size
-
--   The accepted **false positive rate**
-
--   The accepted **false negative rate**
-
-## If using *informative* priors...
-
-If your priors are relatively informative and chosen carefully, then this can reduce the chances of false positives and negatives. But:
-
--   Be careful not to bias the results of the experiment.
-
--   Power analysis is still recommended in order to gauge the worse case scenario for how long the experiment might run.
-
-Bayesian inference, with informative priors, can make it **possible to end an experiment early**.
-
-## If deciding to end early...
-
-Ask yourself:
-
--   Has the experiment run for at least a couple of cycles? (e.g. at least two full weeks)
-
--   Have the results stabilised? Is there a clear winner?
-
--   Could it be worth running longer to learn more?
-
--   What are the **risks** of continuing or ending now? What if the results you see are just a fluke and are therefore misguiding you? What is the impact of making the wrong choice? What are the chances?
-
 # Summary and some final remarks
 
 ## Before starting an experiment
@@ -756,6 +718,44 @@ Further topics that might interest you:
 ::: callout-tip
 These presentation slides and simulations have been produced in RStudio using Quarto. You can download the source code and slides from Github at: <https://github.com/jdeboer/measurecamp2022>
 :::
+
+# When to stop a Bayesian A/B test?
+
+## If using *uninformative* priors...
+
+If your original priors are uninformative or too weak, then you face the same risks as with frequentist experiments.
+
+Perform **power analysis** ahead of running the experiment. This is to determine the required sample size before any inferences are made.
+
+Before commencing the experiment, decide on:
+
+-   The **minimum detectable effect** size
+
+-   The accepted **false positive rate**
+
+-   The accepted **false negative rate**
+
+## If using *informative* priors...
+
+If your priors are relatively informative and chosen carefully, then this can reduce the chances of false positives and negatives. But:
+
+-   Be careful not to bias the results of the experiment.
+
+-   Power analysis is still recommended in order to gauge the worse case scenario for how long the experiment might run.
+
+Bayesian inference, with informative priors, can make it **possible to end an experiment early**.
+
+## If deciding to end early...
+
+Ask yourself:
+
+-   Has the experiment run for at least a couple of cycles? (e.g. at least two full weeks)
+
+-   Have the results stabilised? Is there a clear winner?
+
+-   Could it be worth running longer to learn more?
+
+-   What are the **risks** of continuing or ending now? What if the results you see are just a fluke and are therefore misguiding you? What is the impact of making the wrong choice? What are the chances?
 
 # Extras
 
