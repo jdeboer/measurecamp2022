@@ -332,10 +332,11 @@
 <li><a href="#/priors-and-probability-distributions" id="/toc-priors-and-probability-distributions">Priors and probability distributions</a></li>
 <li><a href="#/running-a-bayesian-ab-test" id="/toc-running-a-bayesian-ab-test">Running a Bayesian A/B test</a></li>
 <li><a href="#/posterior-analysis" id="/toc-posterior-analysis">Posterior analysis</a></li>
-<li><a href="#/when-to-stop-a-bayesian-ab-test" id="/toc-when-to-stop-a-bayesian-ab-test">When to stop a Bayesian A/B test?</a></li>
 <li><a href="#/summary-and-some-final-remarks" id="/toc-summary-and-some-final-remarks">Summary and some final remarks</a></li>
-<li><a href="#/questions" id="/toc-questions">Questions?</a></li>
+<li><a href="#/thank-you" id="/toc-thank-you">Thank you!</a></li>
+<li><a href="#/when-to-stop-a-bayesian-ab-test" id="/toc-when-to-stop-a-bayesian-ab-test">When to stop a Bayesian A/B test?</a></li>
 <li><a href="#/extras" id="/toc-extras">Extras</a></li>
+<li><a href="#/game-of-chances" id="/toc-game-of-chances">Game of chances</a></li>
 </ul>
 </nav>
 </section>
@@ -390,7 +391,7 @@
 <section>
 <section id="priors-and-probability-distributions" class="title-slide slide level1 center">
 <h1>Priors and probability distributions</h1>
-
+<p>The key to speeding up your experiment</p>
 </section>
 <section id="prior-knowledge-and-beliefs" class="slide level2">
 <h2>Prior knowledge and beliefs</h2>
@@ -595,10 +596,10 @@
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">control</td>
-<td style="text-align: right;">72</td>
-<td style="text-align: right;">20</td>
-<td style="text-align: right;">52</td>
-<td style="text-align: left;">27.8%</td>
+<td style="text-align: right;">86</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">54</td>
+<td style="text-align: left;">37.2%</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">treatment</td>
@@ -666,12 +667,12 @@
 </tr>
 <tr class="even">
 <td style="text-align: left;">clicked</td>
-<td style="text-align: right;">20</td>
+<td style="text-align: right;">32</td>
 <td style="text-align: right;">26</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">posterior_shape1</td>
-<td style="text-align: right;">140</td>
+<td style="text-align: right;">152</td>
 <td style="text-align: right;">53</td>
 </tr>
 </tbody>
@@ -700,12 +701,12 @@
 </tr>
 <tr class="even">
 <td style="text-align: left;">not_clicked</td>
-<td style="text-align: right;">52</td>
+<td style="text-align: right;">54</td>
 <td style="text-align: right;">55</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">posterior_shape2</td>
-<td style="text-align: right;">340</td>
+<td style="text-align: right;">342</td>
 <td style="text-align: right;">115</td>
 </tr>
 </tbody>
@@ -748,7 +749,7 @@
 <div class="cell">
 
 </div>
-<p>We’ve now observed a total sample of 4,176 users and a decision is made to end the experiment.</p>
+<p>We’ve now observed a total sample of 4,188 users and a decision is made to end the experiment.</p>
 
 <img data-src="bayes-ab-testing_files/figure-revealjs/unnamed-chunk-18-1.png" width="960" class="r-stretch"></section></section>
 <section>
@@ -771,7 +772,7 @@
 </div>
 </div>
 <aside class="notes">
-<p>The more samples drawn, the greater the precision of the inferences you make, but this comes at the cost of computational time and memory. Nowadays, computer processing speed and memory are more than adequate for what we need. Analytical solutions, providing the greatest level of precision, are also sometimes possible.</p>
+<p>The more samples drawn, the greater the resolution of the inferences you make, but this comes at the cost of computational time and memory. Nowadays, computer processing speed and memory are more than adequate for what we need. Analytical solutions, providing the greatest level of precision, are also sometimes possible.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -810,45 +811,45 @@
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">0.326</td>
-<td style="text-align: right;">0.334</td>
-<td style="text-align: right;">0.024</td>
-<td style="text-align: left;">TRUE</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">0.324</td>
-<td style="text-align: right;">0.327</td>
-<td style="text-align: right;">0.009</td>
-<td style="text-align: left;">TRUE</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">0.311</td>
-<td style="text-align: right;">0.336</td>
-<td style="text-align: right;">0.079</td>
-<td style="text-align: left;">TRUE</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">0.295</td>
-<td style="text-align: right;">0.327</td>
-<td style="text-align: right;">0.111</td>
-<td style="text-align: left;">TRUE</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">0.308</td>
-<td style="text-align: right;">0.346</td>
-<td style="text-align: right;">0.121</td>
-<td style="text-align: left;">TRUE</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">0.306</td>
-<td style="text-align: right;">0.347</td>
-<td style="text-align: right;">0.134</td>
-<td style="text-align: left;">TRUE</td>
-</tr>
-<tr class="odd">
 <td style="text-align: right;">0.316</td>
+<td style="text-align: right;">0.340</td>
+<td style="text-align: right;">0.074</td>
+<td style="text-align: left;">TRUE</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.317</td>
+<td style="text-align: right;">0.358</td>
+<td style="text-align: right;">0.131</td>
+<td style="text-align: left;">TRUE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.310</td>
 <td style="text-align: right;">0.347</td>
-<td style="text-align: right;">0.097</td>
+<td style="text-align: right;">0.119</td>
+<td style="text-align: left;">TRUE</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.294</td>
+<td style="text-align: right;">0.328</td>
+<td style="text-align: right;">0.117</td>
+<td style="text-align: left;">TRUE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.318</td>
+<td style="text-align: right;">0.341</td>
+<td style="text-align: right;">0.075</td>
+<td style="text-align: left;">TRUE</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.301</td>
+<td style="text-align: right;">0.347</td>
+<td style="text-align: right;">0.154</td>
+<td style="text-align: left;">TRUE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.309</td>
+<td style="text-align: right;">0.346</td>
+<td style="text-align: right;">0.118</td>
 <td style="text-align: left;">TRUE</td>
 </tr>
 </tbody>
@@ -876,7 +877,7 @@
 <div class="fragment">
 <div class="cell">
 <div class="cell-output-display">
-<p><img data-src="bayes-ab-testing_files/figure-revealjs/unnamed-chunk-24-1.gif"></p>
+<p><img data-src="bayes-ab-testing_files/figure-revealjs/unnamed-chunk-24-1.png" width="960"></p>
 </div>
 </div>
 </div>
@@ -900,12 +901,12 @@
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>    control         treatment          uplift         beats_control  
- Min.   :0.2720   Min.   :0.2833   Min.   :-0.14088   Mode :logical  
- 1st Qu.:0.3088   1st Qu.:0.3289   1st Qu.: 0.03578   FALSE:65745    
- Median :0.3150   Median :0.3357   Median : 0.06567   TRUE :934255   
- Mean   :0.3151   Mean   :0.3358   Mean   : 0.06661                  
- 3rd Qu.:0.3213   3rd Qu.:0.3426   3rd Qu.: 0.09641                  
- Max.   :0.3582   Max.   :0.3879   Max.   : 0.29837                  </code></pre>
+ Min.   :0.2656   Min.   :0.2902   Min.   :-0.09909   Mode :logical  
+ 1st Qu.:0.3014   1st Qu.:0.3309   1st Qu.: 0.06710   FALSE:13815    
+ Median :0.3075   Median :0.3377   Median : 0.09819   TRUE :986185   
+ Mean   :0.3076   Mean   :0.3378   Mean   : 0.09914                  
+ 3rd Qu.:0.3138   3rd Qu.:0.3446   3rd Qu.: 0.12999                  
+ Max.   :0.3525   Max.   :0.3924   Max.   : 0.34028                  </code></pre>
 </div>
 </div>
 <ul>
@@ -915,7 +916,7 @@
 
 </div>
 <ul>
-<li>What is the posterior probability that the CTR of the treatment is greater than that of control? Answer: 93.43%</li>
+<li>What is the posterior probability that the CTR of the treatment is greater than that of control? Answer: 98.62%</li>
 </ul>
 <aside class="notes">
 <p>Out of our 1 000 000 simulations, we can see how often the treatment bet control. This tells us the probability that treatment is the winner.</p>
@@ -935,42 +936,7 @@
 <section id="posterior-distribution-of-the-ctr-uplift" class="slide level2">
 <h2>Posterior distribution of the CTR uplift</h2>
 
-<img data-src="bayes-ab-testing_files/figure-revealjs/unnamed-chunk-27-1.gif" class="r-stretch"></section></section>
-<section>
-<section id="when-to-stop-a-bayesian-ab-test" class="title-slide slide level1 center">
-<h1>When to stop a Bayesian A/B test?</h1>
-
-</section>
-<section id="if-using-uninformative-priors" class="slide level2">
-<h2>If using <em>uninformative</em> priors…</h2>
-<p>If your original priors are uninformative or too weak, then you face the same risks as with frequentist experiments.</p>
-<p>Perform <strong>power analysis</strong> ahead of running the experiment. This is to determine the required sample size before any inferences are made.</p>
-<p>Before commencing the experiment, decide on:</p>
-<ul>
-<li><p>The <strong>minimum detectable effect</strong> size</p></li>
-<li><p>The accepted <strong>false positive rate</strong></p></li>
-<li><p>The accepted <strong>false negative rate</strong></p></li>
-</ul>
-</section>
-<section id="if-using-informative-priors" class="slide level2">
-<h2>If using <em>informative</em> priors…</h2>
-<p>If your priors are relatively informative and chosen carefully, then this can reduce the chances of false positives and negatives. But:</p>
-<ul>
-<li><p>Be careful not to bias the results of the experiment.</p></li>
-<li><p>Power analysis is still recommended in order to gauge the worse case scenario for how long the experiment might run.</p></li>
-</ul>
-<p>Bayesian inference, with informative priors, can make it possible to end an experiment early.</p>
-</section>
-<section id="if-deciding-to-end-early" class="slide level2">
-<h2>If deciding to end early…</h2>
-<p>Ask yourself:</p>
-<ul>
-<li><p>Has the experiment run for at least a couple of cycles? (e.g.&nbsp;at least two full weeks)</p></li>
-<li><p>Have the results stabilised? Is there a clear winner?</p></li>
-<li><p>Could it be worth running longer to learn more?</p></li>
-<li><p>What are the <strong>risks</strong> of continuing or ending now? What if the results you see are just a fluke and are therefore misguiding you? What is the impact of making the wrong choice? What are the chances?</p></li>
-</ul>
-</section></section>
+<img data-src="bayes-ab-testing_files/figure-revealjs/unnamed-chunk-27-1.png" width="960" class="r-stretch"></section></section>
 <section>
 <section id="summary-and-some-final-remarks" class="title-slide slide level1 center">
 <h1>Summary and some final remarks</h1>
@@ -1025,28 +991,66 @@
           display:block!important;
       }</style></aside>
 </section></section>
-<section id="questions" class="title-slide slide level1 smaller center">
-<h1>Questions?</h1>
+<section id="thank-you" class="title-slide slide level1 center">
+<h1>Thank you!</h1>
 <p>Further topics that might interest you:</p>
 <ul>
-<li><p><strong>Bayesian Generalised Linear Models</strong> to better isolate the effect of the treatment from other predictors (such as seasonality, device types, time of day, etc.)</p></li>
-<li><p><strong>Survival Analysis</strong>, such as <strong>Kaplan Meier</strong>, to analyse lagged conversion outcomes (such as with trial periods) in order to make the most of all of the data you’ve collected.</p></li>
+<li><p><strong>Bayesian Generalised Linear Models</strong> to better isolate the effect of the treatment from other predictors.</p></li>
+<li><p><strong>Survival Analysis</strong>, such as <strong>Kaplan Meier</strong>, to analyse lagged conversion outcomes.</p></li>
 </ul>
-<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="columns">
+<div class="column" style="width:80%;">
+<div class="callout callout-tip callout-style-simple">
 <div class="callout-body">
-<div class="callout-caption">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Tip</strong></p>
-</div>
 <div class="callout-content">
-<p>These presentation slides and simulations have been produced in RStudio using Quarto. You can download the source code and slides from Github at: <a href="https://github.com/jdeboer/measurecamp2022" class="uri">https://github.com/jdeboer/measurecamp2022</a></p>
+<p>These slides and simulations were produced in RStudio using Quarto. Download the source code and slides at: <a href="https://github.com/jdeboer/measurecamp2022" class="uri">https://github.com/jdeboer/measurecamp2022</a></p>
 </div>
+</div>
+</div>
+</div><div class="column" style="width:20%;">
+<p><img data-src="qrcode.png"></p>
 </div>
 </div>
 </section>
 
+<section>
+<section id="when-to-stop-a-bayesian-ab-test" class="title-slide slide level1 center">
+<h1>When to stop a Bayesian A/B test?</h1>
+
+</section>
+<section id="if-using-uninformative-priors" class="slide level2">
+<h2>If using <em>uninformative</em> priors…</h2>
+<p>If your original priors are uninformative or too weak, then you face the same risks as with frequentist experiments.</p>
+<p>Perform <strong>power analysis</strong> ahead of running the experiment. This is to determine the required sample size before any inferences are made.</p>
+<p>Before commencing the experiment, decide on:</p>
+<ul>
+<li><p>The <strong>minimum detectable effect</strong> size</p></li>
+<li><p>The accepted <strong>false positive rate</strong></p></li>
+<li><p>The accepted <strong>false negative rate</strong></p></li>
+</ul>
+</section>
+<section id="if-using-informative-priors" class="slide level2">
+<h2>If using <em>informative</em> priors…</h2>
+<p>If your priors are relatively informative and chosen carefully, then this can reduce the chances of false positives and negatives. But:</p>
+<ul>
+<li><p>Be careful not to bias the results of the experiment.</p></li>
+<li><p>Power analysis is still recommended in order to gauge the worse case scenario for how long the experiment might run.</p></li>
+</ul>
+<p>Bayesian inference, with informative priors, can make it <strong>possible to end an experiment early</strong>.</p>
+</section>
+<section id="if-deciding-to-end-early" class="slide level2">
+<h2>If deciding to end early…</h2>
+<p>Ask yourself:</p>
+<ul>
+<li><p>Has the experiment run for at least a couple of cycles? (e.g.&nbsp;at least two full weeks)</p></li>
+<li><p>Have the results stabilised? Is there a clear winner?</p></li>
+<li><p>Could it be worth running longer to learn more?</p></li>
+<li><p>What are the <strong>risks</strong> of continuing or ending now? What if the results you see are just a fluke and are therefore misguiding you? What is the impact of making the wrong choice? What are the chances?</p></li>
+</ul>
+</section></section>
 <section>
 <section id="extras" class="title-slide slide level1 center">
 <h1>Extras</h1>
@@ -1097,6 +1101,53 @@ v = \frac{\mu (1 - \mu)}{\sigma ^ 2} - 1
 \beta = (1 - \mu) v
 \]</span></p>
 <p>This way, you can determine the shape parameters based on centrality and spread.</p>
+</section></section>
+<section>
+<section id="game-of-chances" class="title-slide slide level1 center">
+<h1>Game of chances</h1>
+
+</section>
+<section id="to-play-this-game" class="slide level2">
+<h2>To play this game:</h2>
+<ul>
+<li><p>There is one host and at least 2 contestants.</p></li>
+<li><p>The host will need a uniform random number generator.</p></li>
+</ul>
+</section>
+<section id="instructions" class="slide level2 smaller">
+<h2>Instructions</h2>
+<ol type="1">
+<li><p>The host secretly picks a number, Y, between 0% and 100% and writes it down.</p></li>
+<li><p>The host will then secretly generate a random number, X, again between 0% and 100%:</p>
+<ul>
+<li>If X is less than Y then the host will mark it as a ‘success’, otherwise as a ‘failure’, using a tally board that’s visible to all contestants.</li>
+</ul></li>
+<li><p>The objective of the game is for contestants to estimate Y by asking the host to perform step 2 as many times as they need (to a reasonable limit). The closer their guess is, the better. However, each contestant can only call out their guess once.</p></li>
+<li><p>Once two contestants have called out what they believe Y is, then the game ends and the host reveals the true answer for Y.</p>
+<ul>
+<li>The first contestant to call out their guess wins the game if they are within 5 points of Y. If not, then the contestant whose guess is closest to Y wins.</li>
+</ul></li>
+</ol>
+</section>
+<section id="lessons-of-the-game" class="slide level2">
+<h2>Lessons of the game</h2>
+<ul>
+<li><p>As the number of successes and failures increases, you get closer to knowing what Y is.</p></li>
+<li><p>The compromise each contestant makes between speed and certainty will influence who wins.</p></li>
+</ul>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Try a modification to the game where Y is a number related to a topic that the audience will have some prior knowledge about. This way they can incorporate their prior expectations when making a guess.</p>
+</div>
+</div>
+</div>
 
 <img src="Logo_MeasureCamp_SYD_2015-3.png" class="slide-logo r-stretch"><div class="footer footer-default">
 <p>Johann de Boer - Sydney Measurecamp 2022</p>

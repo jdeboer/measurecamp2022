@@ -707,16 +707,24 @@ NHST is often referred to as the frequentist approach, where decisions are made 
 Unlike NHST, Bayesian A/B testing doesn't give you a yes/no answer -- it instead informs you about the probabilities and risks associated with the choices you have.
 :::
 
-# Questions? {.smaller}
+# Thank you!
 
 Further topics that might interest you:
 
--   **Bayesian Generalised Linear Models** to better isolate the effect of the treatment from other predictors (such as seasonality, device types, time of day, etc.)
+-   **Bayesian Generalised Linear Models** to better isolate the effect of the treatment from other predictors.
 
--   **Survival Analysis**, such as **Kaplan Meier**, to analyse lagged conversion outcomes (such as with trial periods) in order to make the most of all of the data you've collected.
+-   **Survival Analysis**, such as **Kaplan Meier**, to analyse lagged conversion outcomes.
 
-::: callout-tip
-These presentation slides and simulations have been produced in RStudio using Quarto. You can download the source code and slides from Github at: <https://github.com/jdeboer/measurecamp2022>
+::: columns
+::: {.column width="80%"}
+::: {.callout-tip appearance="simple"}
+These slides and simulations were produced in RStudio using Quarto. Download the source code and slides at: <https://github.com/jdeboer/measurecamp2022>
+:::
+:::
+
+::: {.column width="20%"}
+![](qrcode.png)
+:::
 :::
 
 # When to stop a Bayesian A/B test?
